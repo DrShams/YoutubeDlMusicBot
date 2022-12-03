@@ -128,9 +128,14 @@ async def echo_message(message: types.Message):
             url = str(row[0])
             await bot.send_message(message.from_user.id, "Начинается скачивание плейлиста по url = " + url)
             link = Playlist(url)
-
-            os.chdir('files/users/' + str(message.from_user.id))
-
+            path = 'files/users/' + str(message.from_user.id)
+            try:
+                os.chdir(path)
+            except FileNotFoundError:
+                os.mkdir(path)
+                os.chdir(path)
+            except:
+                print("Other error")
             options = {
                 'format': 'bestaudio/best',
                 'extractaudio' : True,
