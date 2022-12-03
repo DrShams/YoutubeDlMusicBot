@@ -5,14 +5,14 @@ cur = conn.cursor()
 import configparser  # импортируем библиотеку
 import logging
 from aiogram import Bot, Dispatcher, executor, types
-from aiogram.types import ReplyKeyboardRemove, \
-    ReplyKeyboardMarkup, KeyboardButton, \
-    InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton
 
 from pytube import Playlist
 import os
 import youtube_dl
 import re
+
+import traceback
 
 
 STATUS_CODE_JUST_DOWNLOADED = 0
@@ -118,6 +118,25 @@ async def echo_message(message: types.Message):
             await message.reply("Выберите действие",reply_markup=music_menu)
 
     elif message.text == 'Скачать':
+        #условие на то то файлы уже есть в папке и ожидают юзера сваленные по причине ошибки
+        #заменить блок функцией
+        userdirectory = 'files/users/' + str(message.from_user.id)
+        for f in os.listdir(userdirectory):
+            if '.mp3' in f:
+                audio = open(userdirectory + '/' + f, 'rb')
+                pattern = '[^\.]*'
+                m = re.search(pattern,f)
+                filename = m.group(0)
+
+                try:
+                    await bot.send_audio(message.from_user.id, audio, performer = filename, title = filename)
+                    audio.close()
+                    os.remove(userdirectory + '/' + f)
+                except ConnectionResetError as ECONNRESET:
+                    print("Произошел разрыв соединения с пользователем " + str(message.from_user.id))
+                except Exception as err:
+                    print("[Exception]" + traceback.format_exc())
+        #
         cur.execute('SELECT playlist_url FROM Users WHERE id = ? AND playlist_url is not NULL',(user_id,))
         row = cur.fetchone()
         conn.commit()
@@ -128,12 +147,11 @@ async def echo_message(message: types.Message):
             url = str(row[0])
             await bot.send_message(message.from_user.id, "Начинается скачивание плейлиста по url = " + url)
             link = Playlist(url)
-            path = 'files/users/' + str(message.from_user.id)
             try:
-                os.chdir(path)
+                os.chdir(userdirectory)
             except FileNotFoundError:
-                os.mkdir(path)
-                os.chdir(path)
+                os.mkdir(userdirectory)
+                os.chdir(userdirectory)
             except:
                 print("Other error")
             options = {
@@ -177,25 +195,33 @@ async def echo_message(message: types.Message):
                         video_title = video['title']
 
                         pattern = '=([\w\-\/]*)'
-                        #m = re.search(pattern,url)
+                        m = re.search(pattern,url)
 
+                        downloadedtile = video_title + '-' + m.group(1) + '.' + options['postprocessors'][0]['preferredcodec']
                         filename = video_title + '.' + options['postprocessors'][0]['preferredcodec']
+                        try:
+                            os.rename(downloadedtile, filename)
+                        except OSError:
+                            print("[WinError 123] Синтаксическая ошибка в имени файла, имени папки или метке тома:")
+                            filename = downloadedtile
                         print("filename " + filename)
 
                         cur.execute('INSERT INTO Playlist (user_id, url, status) VALUES (?, ?, ?)',(message.from_user.id, url, STATUS_CODE_JUST_DOWNLOADED))#update status 1 when it will be deployed
                         conn.commit()
-
+                        #заменить блок функцией
                         try:
                             audio = open(filename, 'rb')
                         except:
-                            print("Не удается открыть файл" + filename)
+                            print("Не удается открыть файл " + filename)
+                            continue
                         try:
-                            await bot.send_audio(message.from_user.id, audio, performer = filename, title = video_title)
+                            await bot.send_audio(message.from_user.id, audio, performer = video_title, title = video_title)
+                            audio.close()
                             os.remove(filename)
                         except ConnectionResetError as ECONNRESET:
                             print("Произошел разрыв соединения с пользователем " + str(message.from_user.id))
-                        except:
-                            print("Файл не был отправлен по причине потери соединения с " + str(message.from_user.id) + "\n Вероятно требуется синхронизация времени с мировым")
+                        except Exception as err:
+                            print("[Exception]" + traceback.format_exc())
 
             if count == 0:
                 await bot.send_message(message.from_user.id, "Новых саундтреков нет")
