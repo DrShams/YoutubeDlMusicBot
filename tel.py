@@ -195,7 +195,7 @@ async def echo_message(message: types.Message):
                         except ConnectionResetError as ECONNRESET:
                             print("Произошел разрыв соединения с пользователем " + str(message.from_user.id))
                         except:
-                            print("Файл не был отправлен по причине потери соединения с " + str(message.from_user.id))
+                            print("Файл не был отправлен по причине потери соединения с " + str(message.from_user.id) + "\n Вероятно требуется синхронизация времени с мировым")
 
             if count == 0:
                 await bot.send_message(message.from_user.id, "Новых саундтреков нет")
