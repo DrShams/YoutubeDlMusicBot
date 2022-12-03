@@ -177,9 +177,9 @@ async def echo_message(message: types.Message):
                         video_title = video['title']
 
                         pattern = '=([\w\-\/]*)'
-                        m = re.search(pattern,url)
+                        #m = re.search(pattern,url)
 
-                        filename = video_title + '-' + m.group(1) + '.' + options['postprocessors'][0]['preferredcodec']
+                        filename = video_title + '.' + options['postprocessors'][0]['preferredcodec']
                         print("filename " + filename)
 
                         cur.execute('INSERT INTO Playlist (user_id, url, status) VALUES (?, ?, ?)',(message.from_user.id, url, STATUS_CODE_JUST_DOWNLOADED))#update status 1 when it will be deployed
@@ -190,12 +190,12 @@ async def echo_message(message: types.Message):
                         except:
                             print("Не удается открыть файл" + filename)
                         try:
-                            await bot.send_audio(message.from_user.id, audio, performer = m.group(1), title = video_title)
+                            await bot.send_audio(message.from_user.id, audio, performer = filename, title = video_title)
                             os.remove(filename)
                         except ConnectionResetError as ECONNRESET:
-                            print("Произошел разрыв соединения с пользователем " + message.from_user.id)
+                            print("Произошел разрыв соединения с пользователем " + str(message.from_user.id))
                         except:
-                            print("Файл не был отправлен по причине потери соединения с " + message.from_user.id)
+                            print("Файл не был отправлен по причине потери соединения с " + str(message.from_user.id))
 
             if count == 0:
                 await bot.send_message(message.from_user.id, "Новых саундтреков нет")
