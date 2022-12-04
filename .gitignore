@@ -1,3 +1,4 @@
 *.ini
 *.mp3
 *.part
+*.sqlite
