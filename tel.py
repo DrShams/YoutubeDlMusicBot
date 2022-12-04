@@ -5,7 +5,7 @@ cur = conn.cursor()
 import configparser  # импортируем библиотеку
 import logging
 from aiogram import Bot, Dispatcher, executor, types
-from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 from pytube import Playlist
 import os
@@ -13,7 +13,6 @@ import youtube_dl
 import re
 
 import traceback
-
 
 STATUS_CODE_JUST_DOWNLOADED = 0
 path = os.path.abspath("files/")
@@ -231,7 +230,7 @@ async def echo_message(message: types.Message):
     elif message.text == 'Редактировать плейлист':
         await bot.send_message(message.from_user.id, "Вставьте ссылку в чат на плейлист youtube")
     else:
-        if 'https://www.youtube.com/playlist?list' in message.text:
+        if '.com/playlist?list' in message.text:
             link = message.text
             cur.execute('UPDATE Users SET playlist_url = ? WHERE id = ?',(link,user_id))
             row = cur.fetchone()
