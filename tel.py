@@ -120,6 +120,14 @@ async def echo_message(message: types.Message):
         #условие на то то файлы уже есть в папке и ожидают юзера сваленные по причине ошибки
         #заменить блок функцией
         userdirectory = 'files/users/' + str(message.from_user.id)
+
+        try:
+            os.listdir(userdirectory)
+        except FileNotFoundError:
+            os.mkdir(userdirectory)
+        except:
+            print("[Error] can't create file, access denied may be for the folder")
+
         for f in os.listdir(userdirectory):
             if '.mp3' in f:
                 audio = open(userdirectory + '/' + f, 'rb')
