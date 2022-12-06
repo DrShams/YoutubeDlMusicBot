@@ -1,95 +1,38 @@
-import sqlite3
-conn = sqlite3.connect('files/db.sqlite',check_same_thread=False)
-cur = conn.cursor()
-
-import configparser  # импортируем библиотеку
-import logging
-from aiogram import Bot, Dispatcher, executor, types
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
-
-from pytube import Playlist
+#[1]Standard library imports
 import os
-import youtube_dl
 import re
+import configparser
+import logging
 
+#[2]Related third party imports.
+import youtube_dl
 import traceback
+from aiogram import Bot, Dispatcher, executor, types
+from pytube import Playlist
 
-STATUS_CODE_JUST_DOWNLOADED = 0
-path = os.path.abspath("files/")
-os.environ["PATH"] += os.pathsep + path
-conn = sqlite3.connect('files/db.sqlite',check_same_thread=False)
-cur = conn.cursor()
+#[3] Local application/library specific imports
+import interface
+import database
 
-# --- Main Menu ---
-#Создаем кнопки
-btn_main = KeyboardButton('Главное меню')
-btn_music = KeyboardButton('Музыка') # скачивание музыки с youtube
-btn_travel = KeyboardButton('Турагентство') # кнопка для вызова парсера для турагенства и публикации в вк
-btn_camera = KeyboardButton('Камера') # кнопка для вызова камеры
-btn_english = KeyboardButton('Английский') # кнопка для вызова парсера
-
-main_menu = ReplyKeyboardMarkup(resize_keyboard = True) # чтобы кнопки не были во весь экран
-main_menu.add(btn_music, btn_travel, btn_camera, btn_english, btn_main)
-
-
-# --- Full Music menu ---
-btn_music_download = KeyboardButton('Скачать')
-btn_music_change = KeyboardButton('Редактировать плейлист')
-music_menu = ReplyKeyboardMarkup(resize_keyboard = True)
-music_menu.add(btn_music_download, btn_music_change)
-
-# --- Shorted Music menu ---
-music_smenu = ReplyKeyboardMarkup(resize_keyboard = True)
-music_smenu.add(btn_music_change)
-
-
+# Initialize bot and dispatcher
 config = configparser.ConfigParser()  # создаём объекта парсера
 config.read("settings.ini")  # читаем конфиг
 TOKEN = config["Telegram"]["TOKEN"] # обращаемся как к обычному словарю!
-print(TOKEN)
-
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-
-# Initialize bot and dispatcher
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
 
-# @dp.callback_query_handler(text = 'button1')
-# async def process_callback_button1(callback_query: types.CallbackQuery):
-#     await bot.answer_callback_query(callback_query.id)
-#     await bot.send_message(callback_query.from_user.id, 'Нажата первая кнопка!')
-
-def makedb():
-    """Create Database if not exists"""
-
-    cur.executescript('''
-        CREATE TABLE IF NOT EXISTS "Users" (
-        	"id" INTEGER,
-        	"user_name" TEXT,
-        	"playlist_url"	TEXT);
-
-        CREATE TABLE IF NOT EXISTS "Playlist" (
-            "id" INTEGER,
-        	"user_id" INTEGER,
-            "url" TEXT,
-            "status" INTEGER,
-        PRIMARY KEY("id" AUTOINCREMENT));
-        '''
-    )
-
 @dp.message_handler(commands=['start'])
 async def process_start_command(message: types.Message):
-    """This handler will be called when user sends `/start`"""
+    """This handler will be called when user sends /start"""
     user_id = message.from_user.id
     first_name = message.from_user.first_name
     #проверим есть ли пользователь в базе
-    cur.execute('SELECT * FROM Users WHERE id = ?',(user_id,))
-    row = cur.fetchone()
-    conn.commit()
+    row = database.cur.fetchone()
+    database.cur.execute('SELECT * FROM Users WHERE id = ?',(user_id,))
+    database.conn.commit()
     if row is None:
-        cur.execute('INSERT INTO Users (id, user_name) VALUES (?, ?)',(user_id, first_name))#update status 1 when it will be deployed
-        conn.commit()
+        database.cur.execute('INSERT INTO Users (id, user_name) VALUES (?, ?)',(user_id, first_name))#update status 1 when it will be deployed
+        database.conn.commit()
         await bot.send_message(message.from_user.id, "Вы были записаны базу данных")
     else:
         print("Пользователь " + first_name + " вошел")
@@ -97,7 +40,7 @@ async def process_start_command(message: types.Message):
 
 @dp.message_handler(commands=['help'])
 async def process_help_command(message: types.Message):
-    """This handler will be called when user sends `/help`"""
+    """This handler will be called when user sends /help"""
     await message.reply("Напиши мне что-нибудь, и я отпрпавлю этот текст тебе в ответ!")
 
 @dp.message_handler()
@@ -107,9 +50,9 @@ async def echo_message(message: types.Message):
 
     if message.text == 'Музыка':
         #проверим есть ли ссылка на плейлист для этого пользователя
-        cur.execute('SELECT playlist_url FROM Users WHERE id = ? AND playlist_url is not NULL',(user_id,))
-        row = cur.fetchone()
-        conn.commit()
+        database.cur.execute('SELECT playlist_url FROM Users WHERE id = ? AND playlist_url is not NULL',(user_id,))
+        row = database.cur.fetchone()
+        database.conn.commit()
         if row is None:
             await bot.send_message(message.from_user.id, "Вставьте ссылку в чат на плейлист youtube")
         else:
@@ -144,13 +87,12 @@ async def echo_message(message: types.Message):
                 except Exception as err:
                     print("[Exception]" + traceback.format_exc())
         #
-        cur.execute('SELECT playlist_url FROM Users WHERE id = ? AND playlist_url is not NULL',(user_id,))
-        row = cur.fetchone()
-        conn.commit()
+        database.cur.execute('SELECT playlist_url FROM Users WHERE id = ? AND playlist_url is not NULL',(user_id,))
+        row = database.cur.fetchone()
+        database.conn.commit()
         if row is None:
             await bot.send_message(message.from_user.id, "Вставьте ссылку в чат на плейлист youtube")
         else:
-
             url = str(row[0])
             await bot.send_message(message.from_user.id, "Начинается скачивание плейлиста по url = " + url)
             link = Playlist(url)
@@ -176,9 +118,9 @@ async def echo_message(message: types.Message):
             for url in link.video_urls:
                 #print("s " + url)
 
-                cur.execute('SELECT id FROM Playlist WHERE url = ?',(url,))
-                row = cur.fetchone()
-                conn.commit()
+                database.cur.execute('SELECT id FROM Playlist WHERE url = ?',(url,))
+                row = database.cur.fetchone()
+                database.conn.commit()
                 if row is None:
                     count = count + 1
                     result = 'NONE'
@@ -213,8 +155,8 @@ async def echo_message(message: types.Message):
                             filename = downloadedtile
                         print("filename " + filename)
 
-                        cur.execute('INSERT INTO Playlist (user_id, url, status) VALUES (?, ?, ?)',(message.from_user.id, url, STATUS_CODE_JUST_DOWNLOADED))#update status 1 when it will be deployed
-                        conn.commit()
+                        database.cur.execute('INSERT INTO Playlist (user_id, url, status) VALUES (?, ?, ?)',(message.from_user.id, url, STATUS_CODE_JUST_DOWNLOADED))#update status 1 when it will be deployed
+                        database.conn.commit()
                         #заменить блок функцией
                         try:
                             audio = open(filename, 'rb')
@@ -240,13 +182,22 @@ async def echo_message(message: types.Message):
     else:
         if '.com/playlist?list' in message.text:
             link = message.text
-            cur.execute('UPDATE Users SET playlist_url = ? WHERE id = ?',(link,user_id))
-            row = cur.fetchone()
-            conn.commit()
+            database.cur.execute('UPDATE Users SET playlist_url = ? WHERE id = ?',(link,user_id))
+            row = database.cur.fetchone()
+            database.conn.commit()
             await bot.send_message(message.from_user.id, "Ссылка была успешно добавлена " + link)
         else:
             await bot.send_message(message.from_user.id, message.text)
 
 if __name__ == '__main__':
-    makedb()
+
+    STATUS_CODE_JUST_DOWNLOADED = 0
+    path = os.path.abspath("files/")
+    os.environ["PATH"] += os.pathsep + path
+
+    # Configure logging
+    logging.basicConfig(level=logging.INFO)
+
+    database.makedb()
+    interface.createbuttons()
     executor.start_polling(dp)
