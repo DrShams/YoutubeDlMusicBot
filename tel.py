@@ -21,6 +21,28 @@ TOKEN = config["Telegram"]["TOKEN"] # обращаемся как к обычн�
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
 
+async def send_audio(message: types.Message, filename):
+    """Send audiofile to the user"""
+
+    #cut .mp3 from title
+    pattern = '[^\.]*'
+    m = re.search(pattern,filename)
+    track_title = m.group(0)
+
+    try:
+        audio = open(filename, 'rb')
+    except:
+        print("Не удается открыть файл " + filename)
+        return False
+    try:
+        await bot.send_audio(message.from_user.id, audio, performer = track_title, title = track_title)
+        audio.close()
+        os.remove(filename)
+    except ConnectionResetError as ECONNRESET:
+        print("Произошел разрыв соединения с пользователем " + str(message.from_user.id))
+    except Exception as err:
+        print("[Exception]" + traceback.format_exc())
+
 @dp.message_handler(commands=['start'])
 async def process_start_command(message: types.Message):
     """This handler will be called when user sends /start"""
@@ -60,33 +82,28 @@ async def echo_message(message: types.Message):
             await message.reply("Выберите действие",reply_markup=music_menu)
 
     elif message.text == 'Скачать':
-        #условие на то то файлы уже есть в папке и ожидают юзера сваленные по причине ошибки
         #заменить блок функцией
         userdirectory = 'files/users/' + str(message.from_user.id)
+        if str(message.from_user.id) in os.path.abspath(os.getcwd()):#if user currently in the folder
+            #print("you are already in current path")
+            userdirectory = '.'#CHANGE
+        else:
+            try:
+                os.chdir(userdirectory)
+                userdirectory = '.'#CHANGE
+            except FileNotFoundError:
+                print("current path is " + os.path.abspath(os.getcwd()))#тут может быть ошибка если юзер уже перешел в директорию
+                os.mkdir(userdirectory)
+                os.chdir(userdirectory)
+                userdirectory = '.'#CHANGE
+            except:
+                print("[Error] can't create file, access denied may be for the folder")
 
-        try:
-            os.listdir(userdirectory)
-        except FileNotFoundError:
-            os.mkdir(userdirectory)
-        except:
-            print("[Error] can't create file, access denied may be for the folder")
+        for filename in os.listdir(userdirectory):
+            if '.mp3' in filename:
+                await bot.send_message(message.from_user.id, "Ожидается отправка " + filename + " из хранилища...") #указать количество
+                await send_audio(message, filename)
 
-        for f in os.listdir(userdirectory):
-            if '.mp3' in f:
-                audio = open(userdirectory + '/' + f, 'rb')
-                pattern = '[^\.]*'
-                m = re.search(pattern,f)
-                filename = m.group(0)
-
-                try:
-                    await bot.send_audio(message.from_user.id, audio, performer = filename, title = filename)
-                    audio.close()
-                    os.remove(userdirectory + '/' + f)
-                except ConnectionResetError as ECONNRESET:
-                    print("Произошел разрыв соединения с пользователем " + str(message.from_user.id))
-                except Exception as err:
-                    print("[Exception]" + traceback.format_exc())
-        #
         database.cur.execute('SELECT playlist_url FROM Users WHERE id = ? AND playlist_url is not NULL',(user_id,))
         row = database.cur.fetchone()
         database.conn.commit()
@@ -96,13 +113,6 @@ async def echo_message(message: types.Message):
             url = str(row[0])
             await bot.send_message(message.from_user.id, "Начинается скачивание плейлиста по url = " + url)
             link = Playlist(url)
-            try:
-                os.chdir(userdirectory)
-            except FileNotFoundError:
-                os.mkdir(userdirectory)
-                os.chdir(userdirectory)
-            except:
-                print("Other error")
             options = {
                 'format': 'bestaudio/best',
                 'extractaudio' : True,
@@ -135,11 +145,9 @@ async def echo_message(message: types.Message):
 
                     if result != 'NONE':
 
-                        if 'entries' in result:
-                            # Can be a playlist or a list of videos
+                        if 'entries' in result: # Can be a playlist or a list of videos
                             video = result['entries'][0]
-                        else:
-                            # Just a video
+                        else:  # Just a video
                             video = result
                         video_title = video['title']
 
@@ -157,20 +165,9 @@ async def echo_message(message: types.Message):
 
                         database.cur.execute('INSERT INTO Playlist (user_id, url, status) VALUES (?, ?, ?)',(message.from_user.id, url, STATUS_CODE_JUST_DOWNLOADED))#update status 1 when it will be deployed
                         database.conn.commit()
-                        #заменить блок функцией
-                        try:
-                            audio = open(filename, 'rb')
-                        except:
-                            print("Не удается открыть файл " + filename)
-                            continue
-                        try:
-                            await bot.send_audio(message.from_user.id, audio, performer = video_title, title = video_title)
-                            audio.close()
-                            os.remove(filename)
-                        except ConnectionResetError as ECONNRESET:
-                            print("Произошел разрыв соединения с пользователем " + str(message.from_user.id))
-                        except Exception as err:
-                            print("[Exception]" + traceback.format_exc())
+
+                        await send_audio(message, filename)
+
 
             if count == 0:
                 await bot.send_message(message.from_user.id, "Новых саундтреков нет")
