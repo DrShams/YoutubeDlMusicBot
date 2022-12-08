@@ -35,7 +35,7 @@ async def send_audio(message: types.Message, filename):
         print("Не удается открыть файл " + filename)
         return False
     try:
-        await bot.send_audio(message.from_user.id, audio, performer = track_title, title = track_title)
+        await bot.send_audio(message.from_user.id, audio, performer = track_title, title = track_title)#change performer
         audio.close()
         os.remove(filename)
     except ConnectionResetError as ECONNRESET:
