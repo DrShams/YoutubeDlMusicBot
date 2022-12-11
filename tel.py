@@ -29,15 +29,16 @@ async def send_audio(message: types.Message, filename):
     m = re.search(pattern,filename)
     track_title = m.group(0)
 
+    filenamepath = 'files/users/' + str(message.from_user.id) + '/' + filename
     try:
-        audio = open(filename, 'rb')
+        audio = open(filenamepath, 'rb')
     except:
         print("Не удается открыть файл " + filename)
         return False
     try:
         await bot.send_audio(message.from_user.id, audio, performer = track_title, title = track_title)#change performer
         audio.close()
-        os.remove(filename)
+        os.remove(filenamepath)
     except ConnectionResetError as ECONNRESET:
         print("Произошел разрыв соединения с пользователем " + str(message.from_user.id))
     except Exception as err:
@@ -84,20 +85,10 @@ async def echo_message(message: types.Message):
     elif message.text == 'Скачать':
         #заменить блок функцией
         userdirectory = 'files/users/' + str(message.from_user.id)
-        if str(message.from_user.id) in os.path.abspath(os.getcwd()):#if user currently in the folder
-            #print("you are already in current path")
-            userdirectory = '.'#CHANGE
+        if os.path.isdir(userdirectory):
+            print("folder " + userdirectory + " already exists")
         else:
-            try:
-                os.chdir(userdirectory)
-                userdirectory = '.'#CHANGE
-            except FileNotFoundError:
-                print("current path is " + os.path.abspath(os.getcwd()))#тут может быть ошибка если юзер уже перешел в директорию
-                os.mkdir(userdirectory)
-                os.chdir(userdirectory)
-                userdirectory = '.'#CHANGE
-            except:
-                print("[Error] can't create file, access denied may be for the folder")
+            os.mkdir(userdirectory)
 
         for filename in os.listdir(userdirectory):
             if '.mp3' in filename:
@@ -156,11 +147,15 @@ async def echo_message(message: types.Message):
 
                         downloadedtile = video_title + '-' + m.group(1) + '.' + options['postprocessors'][0]['preferredcodec']
                         filename = video_title + '.' + options['postprocessors'][0]['preferredcodec']
+
                         try:
-                            os.rename(downloadedtile, filename)
+                            pathto = os.getcwd() + '/files/users/' + str(message.from_user.id)+ '/' + filename
+                            os.rename(downloadedtile, pathto)
+
                         except OSError:
                             print("[WinError 123] Синтаксическая ошибка в имени файла, имени папки или метке тома:")
                             filename = downloadedtile
+
                         print("filename " + filename)
 
                         database.cur.execute('INSERT INTO Playlist (user_id, url, status) VALUES (?, ?, ?)',(message.from_user.id, url, STATUS_CODE_JUST_DOWNLOADED))#update status 1 when it will be deployed
