@@ -24,7 +24,6 @@ dp = Dispatcher(bot)
 async def send_audio(message: types.Message, filename):
     """Send audiofile to the user"""
 
-    #cut .mp3 from title
     pattern = '[^\.]*'
     m = re.search(pattern,filename)
     track_title = m.group(0)
@@ -32,17 +31,20 @@ async def send_audio(message: types.Message, filename):
     filenamepath = 'files/users/' + str(message.from_user.id) + '/' + filename
     try:
         audio = open(filenamepath, 'rb')
+        logging.debug("file " + filenamepath + " successfully open")
     except:
-        print("Не удается открыть файл " + filename)
+        logging.warning("file " + filename + " couldn't open")
         return False
     try:
         await bot.send_audio(message.from_user.id, audio, performer = track_title, title = track_title)#change performer
+        logging.info("the file " + filenamepath + " sucessefully sent to " + message.from_user.first_name)
         audio.close()
         os.remove(filenamepath)
+        logging.debug("the file " +  filenamepath + " removed")
     except ConnectionResetError as ECONNRESET:
-        print("Произошел разрыв соединения с пользователем " + str(message.from_user.id))
+        logging.warning("[ConnectionResetError]Connection with the user " + message.from_user.first_name + " has been interrupted")
     except Exception as err:
-        print("[Exception]" + traceback.format_exc())
+        logging.warning("[Exception]" + traceback.format_exc())
 
 @dp.message_handler(commands=['start'])
 async def process_start_command(message: types.Message):
@@ -58,7 +60,7 @@ async def process_start_command(message: types.Message):
         database.conn.commit()
         await bot.send_message(message.from_user.id, "Вы были записаны базу данных")
     else:
-        print("Пользователь " + first_name + " вошел")
+        logging.info("User " + first_name + " entered")
     await message.reply("Привет!\nНапиши мне что-нибудь!",reply_markup=main_menu)
 
 @dp.message_handler(commands=['help'])
@@ -83,17 +85,20 @@ async def echo_message(message: types.Message):
             await message.reply("Выберите действие",reply_markup=music_menu)
 
     elif message.text == 'Скачать':
+        logging.info("user " + message.from_user.first_name + " clicked 'Download' button")
         #заменить блок функцией
         userdirectory = 'files/users/' + str(message.from_user.id)
         if os.path.isdir(userdirectory):
-            print("folder " + userdirectory + " already exists")
+            logging.debug("the folder " + userdirectory + " has been already exists")
         else:
+            logging.info("the folder " + userdirectory + " created")
             os.mkdir(userdirectory)
 
         for filename in os.listdir(userdirectory):
             if '.mp3' in filename:
                 await bot.send_message(message.from_user.id, "Ожидается отправка " + filename + " из хранилища...") #указать количество
                 await send_audio(message, filename)
+                logging.info("filename " + filename + " sent")
 
         database.cur.execute('SELECT playlist_url FROM Users WHERE id = ? AND playlist_url is not NULL',(user_id,))
         row = database.cur.fetchone()
@@ -117,22 +122,22 @@ async def echo_message(message: types.Message):
             ydl = youtube_dl.YoutubeDL(options)
             count = 0
             for url in link.video_urls:
-                #print("s " + url)
-
                 database.cur.execute('SELECT id FROM Playlist WHERE url = ?',(url,))
+
                 row = database.cur.fetchone()
                 database.conn.commit()
                 if row is None:
                     count = count + 1
                     result = 'NONE'
-                    try:#скачивание самого файла и получение результата
+                    try:
                         with ydl:#GOOGLE
                             result = ydl.extract_info(
                                 url,
                                 download = True
                             )
+                        logging.info("downloading the file from url " + url)
                     except:
-                        print("[Error] Проблема с соединением при скачивании файла " + url)
+                        logging.warning("Проблема с соединением при скачивании файла " + url)
 
                     if result != 'NONE':
 
@@ -151,14 +156,12 @@ async def echo_message(message: types.Message):
                         try:
                             pathto = os.getcwd() + '/files/users/' + str(message.from_user.id)+ '/' + filename
                             os.rename(downloadedtile, pathto)
-
+                            logging.info("the file " + downloadedtile + " renamed and replaced to " + pathto)
                         except OSError:
-                            print("[WinError 123] Синтаксическая ошибка в имени файла, имени папки или метке тома:")
+                            logging.warning("[WinError 123] Синтаксическая ошибка в имени файла, имени папки или метке тома:")
                             filename = downloadedtile
 
-                        print("filename " + filename)
-
-                        database.cur.execute('INSERT INTO Playlist (user_id, url, status) VALUES (?, ?, ?)',(message.from_user.id, url, STATUS_CODE_JUST_DOWNLOADED))#update status 1 when it will be deployed
+                        database.cur.execute('INSERT INTO Playlist (user_id, url, status) VALUES (?, ?, ?)',(message.from_user.id, url, STATUS_CODE_JUST_DOWNLOADED))#update status 1 when the file will be send
                         database.conn.commit()
 
                         await send_audio(message, filename)
@@ -188,8 +191,15 @@ if __name__ == '__main__':
     os.environ["PATH"] += os.pathsep + path
 
     # Configure logging
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.INFO, filename = "logs.log", filemode="w")
 
     database.makedb()
     interface.createbuttons()
+    #try:
     executor.start_polling(dp)
+    """except KeyboardInterrupt:
+        logging.info("programm has been interrupted")
+        try:
+            sys.exit(0)
+        except SystemExit:
+            os._exit(0)"""
