@@ -1,2 +1,7 @@
 INFO:aiogram:Bot: Paradise [@Ufaparadisebot]
 INFO:aiogram.dispatcher.dispatcher:Start polling.
+INFO:root:user Ruslan Shams clicked 'Download' button
+INFO:root:user Ruslan Shams clicked 'Download' button
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=tA0Tce1V4vM
+INFO:root:the file Armin van Buuren x The Stickmen Project - No Fun (Official Lyric Video)-tA0Tce1V4vM.mp3 renamed and replaced to D:\GitHub\MyRobot/files/users/344579391/Armin van Buuren x The Stickmen Project - No Fun (Official Lyric Video).mp3
+INFO:root:the file files/users/344579391/Armin van Buuren x The Stickmen Project - No Fun (Official Lyric Video).mp3 sucessefully sent to Ruslan Shams
