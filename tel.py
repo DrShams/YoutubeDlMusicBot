@@ -130,12 +130,13 @@ async def echo_message(message: types.Message):
                     count = count + 1
                     result = 'NONE'
                     try:
+                        logging.info("downloading the file from url " + url)
                         with ydl:#GOOGLE
                             result = ydl.extract_info(
                                 url,
                                 download = True
                             )
-                        logging.info("downloading the file from url " + url)
+                        logging.info("the file from " + url + " downloaded")
                     except:
                         logging.warning("Проблема с соединением при скачивании файла " + url)
 
