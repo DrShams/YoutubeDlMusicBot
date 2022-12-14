@@ -5,7 +5,6 @@ import configparser
 import logging
 
 #[2]Related third party imports.
-import youtube_dl
 import traceback
 from aiogram import Bot, Dispatcher, executor, types
 from pytube import Playlist
@@ -13,6 +12,7 @@ from pytube import Playlist
 #[3] Local application/library specific imports
 import interface
 import database
+import youtube
 
 # Initialize bot and dispatcher
 config = configparser.ConfigParser()  # создаём объекта парсера
@@ -109,17 +109,7 @@ async def echo_message(message: types.Message):
             url = str(row[0])
             await bot.send_message(message.from_user.id, "Начинается скачивание плейлиста по url = " + url)
             link = Playlist(url)
-            options = {
-                'format': 'bestaudio/best',
-                'extractaudio' : True,
-                'postprocessors': [{
-                    'key': 'FFmpegExtractAudio',
-                    'preferredcodec': 'mp3',
-                    'preferredquality': '192',
-                }]
-            }
 
-            ydl = youtube_dl.YoutubeDL(options)
             count = 0
             for url in link.video_urls:
                 database.cur.execute('SELECT id FROM Playlist WHERE url = ?',(url,))
@@ -127,24 +117,19 @@ async def echo_message(message: types.Message):
                 row = database.cur.fetchone()
                 database.conn.commit()
                 if row is None:
-                    count = count + 1
-                    result = 'NONE'
                     #try:
                     logging.info("downloading the file from url " + url)
                     try:
-                        with ydl:#GOOGLE
-                            result = ydl.extract_info(
-                                url,
-                                download = True
-                            )
+                        result = youtube.downloadfile(url)
+                        logging.info("type of file " + type(result))
                         logging.info("the file from " + url + " downloaded")
                     except:
                         logging.warning("Проблема с соединением при скачивании файла " + url)
-                        executor.start_polling(dp)
+                        executor.start_polling(dp)#DELETE?
                         logging.info("Соединение было перезапущено")
 
                     if result != 'NONE':
-
+                        count = count + 1
                         if 'entries' in result: # Can be a playlist or a list of videos
                             video = result['entries'][0]
                         else:  # Just a video
@@ -153,17 +138,20 @@ async def echo_message(message: types.Message):
 
                         pattern = '=([\w\-\/]*)'
                         m = re.search(pattern,url)
-
-                        downloadedtile = video_title + '-' + m.group(1) + '.' + options['postprocessors'][0]['preferredcodec']
-                        filename = video_title + '.' + options['postprocessors'][0]['preferredcodec']
-
-                        try:
-                            pathto = os.getcwd() + '/files/users/' + str(message.from_user.id)+ '/' + filename
-                            os.rename(downloadedtile, pathto)
-                            logging.info("the file " + downloadedtile + " renamed and replaced to " + pathto)
-                        except OSError:
-                            logging.warning("[WinError 123] Синтаксическая ошибка в имени файла, имени папки или метке тома:")
-                            filename = downloadedtile
+                        
+                        downloadedtile = video_title + '-' + m.group(1) + '.mp3'
+                        filename = video_title + '.mp3'
+                        filesize = os.stat(downloadedtile).st_size / (1024*1024)#megabytes
+                        if filesize < 50:
+                            try:
+                                pathto = os.getcwd() + '/files/users/' + str(message.from_user.id)+ '/' + filename
+                                os.rename(downloadedtile, pathto)
+                                logging.info("the file " + downloadedtile + " renamed and replaced to " + pathto)
+                            except OSError:
+                                logging.warning("[OSError] Синтаксическая ошибка в имени файла, имени папки или метке тома:")
+                                filename = downloadedtile
+                        else:
+                            logging.warning("filesize " + str(filesize) +  " was skipper (more than 50 megabytes)")
 
                         database.cur.execute('INSERT INTO Playlist (user_id, url, status) VALUES (?, ?, ?)',(message.from_user.id, url, STATUS_CODE_JUST_DOWNLOADED))#update status 1 when the file will be send
                         database.conn.commit()
