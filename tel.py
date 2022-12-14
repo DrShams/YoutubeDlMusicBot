@@ -131,14 +131,17 @@ async def echo_message(message: types.Message):
                     result = 'NONE'
                     #try:
                     logging.info("downloading the file from url " + url)
-                    with ydl:#GOOGLE
-                        result = ydl.extract_info(
-                            url,
-                            download = True
-                        )
-                    logging.info("the file from " + url + " downloaded")
-                    #except:
-                    #    logging.warning("Проблема с соединением при скачивании файла " + url)
+                    try:
+                        with ydl:#GOOGLE
+                            result = ydl.extract_info(
+                                url,
+                                download = True
+                            )
+                        logging.info("the file from " + url + " downloaded")
+                    except:
+                        logging.warning("Проблема с соединением при скачивании файла " + url)
+                        executor.start_polling(dp)
+                        logging.info("Соединение было перезапущено")
 
                     if result != 'NONE':
 
