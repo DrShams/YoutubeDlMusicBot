@@ -29,22 +29,28 @@ async def send_audio(message: types.Message, filename):
     track_title = m.group(0)
 
     filenamepath = 'files/users/' + str(message.from_user.id) + '/' + filename
-    try:
-        audio = open(filenamepath, 'rb')
-        logging.debug("file " + filenamepath + " successfully open")
-    except:
-        logging.warning("file " + filename + " couldn't open")
-        return False
-    try:
-        await bot.send_audio(message.from_user.id, audio, performer = track_title, title = track_title)#change performer
-        logging.info("the file " + filenamepath + " sucessefully sent to " + message.from_user.first_name)
-        audio.close()
-        os.remove(filenamepath)
-        logging.debug("the file " +  filenamepath + " removed")
-    except ConnectionResetError as ECONNRESET:
-        logging.warning("[ConnectionResetError]Connection with the user " + message.from_user.first_name + " has been interrupted")
-    except Exception as err:
-        logging.warning("[Exception]" + traceback.format_exc())
+
+    filesize = os.stat(filenamepath).st_size / (1024*1024)#megabytes
+    if filesize >= 50:
+        logging.warning("filesize " + str(filesize) +  " was skipper (more than 50 megabytes)")
+        await bot.send_message(message.from_user.id, "Файл " + filename + " был пропущен, т.к весит больше 50 мегабайт") #указать количество
+    else:
+        try:
+            audio = open(filenamepath, 'rb')
+            logging.debug("file " + filenamepath + " successfully open")
+        except:
+            logging.warning("file " + filename + " couldn't open")
+            return False
+        try:
+            await bot.send_audio(message.from_user.id, audio, performer = track_title, title = track_title)#change performer
+            logging.info("the file " + filenamepath + " sucessefully sent to " + message.from_user.first_name)
+            audio.close()
+            os.remove(filenamepath)
+            logging.debug("the file " +  filenamepath + " removed")
+        except ConnectionResetError as ECONNRESET:
+            logging.warning("[ConnectionResetError]Connection with the user " + message.from_user.first_name + " has been interrupted")
+        except Exception as err:
+            logging.warning("[Exception]" + traceback.format_exc())
 
 @dp.message_handler(commands=['start'])
 async def process_start_command(message: types.Message):
@@ -121,7 +127,6 @@ async def echo_message(message: types.Message):
                     logging.info("downloading the file from url " + url)
                     try:
                         result = youtube.downloadfile(url)
-                        logging.info("type of file " + type(result))
                         logging.info("the file from " + url + " downloaded")
                     except:
                         logging.warning("Проблема с соединением при скачивании файла " + url)
@@ -141,17 +146,14 @@ async def echo_message(message: types.Message):
                         
                         downloadedtile = video_title + '-' + m.group(1) + '.mp3'
                         filename = video_title + '.mp3'
-                        filesize = os.stat(downloadedtile).st_size / (1024*1024)#megabytes
-                        if filesize < 50:
-                            try:
-                                pathto = os.getcwd() + '/files/users/' + str(message.from_user.id)+ '/' + filename
-                                os.rename(downloadedtile, pathto)
-                                logging.info("the file " + downloadedtile + " renamed and replaced to " + pathto)
-                            except OSError:
-                                logging.warning("[OSError] Синтаксическая ошибка в имени файла, имени папки или метке тома:")
-                                filename = downloadedtile
-                        else:
-                            logging.warning("filesize " + str(filesize) +  " was skipper (more than 50 megabytes)")
+                        
+                        try:
+                            pathto = os.getcwd() + '/files/users/' + str(message.from_user.id)+ '/' + filename
+                            os.rename(downloadedtile, pathto)
+                            logging.info("the file " + downloadedtile + " renamed and replaced to " + pathto)
+                        except OSError:
+                            logging.warning("[OSError] Синтаксическая ошибка в имени файла, имени папки или метке тома:")
+                            filename = downloadedtile
 
                         database.cur.execute('INSERT INTO Playlist (user_id, url, status) VALUES (?, ?, ?)',(message.from_user.id, url, STATUS_CODE_JUST_DOWNLOADED))#update status 1 when the file will be send
                         database.conn.commit()
@@ -189,9 +191,3 @@ if __name__ == '__main__':
     interface.createbuttons()
     #try:
     executor.start_polling(dp)
-    """except KeyboardInterrupt:
-        logging.info("programm has been interrupted")
-        try:
-            sys.exit(0)
-        except SystemExit:
-            os._exit(0)"""
