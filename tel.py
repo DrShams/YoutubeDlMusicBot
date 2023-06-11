@@ -22,7 +22,7 @@ bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
 
 async def send_audio(message: types.Message, filename):
-    """Send audiofile to the user"""
+    """Send audiofile to a user"""
 
     pattern = '[^\.]*'
     m = re.search(pattern,filename)
@@ -55,6 +55,7 @@ async def send_audio(message: types.Message, filename):
 @dp.message_handler(commands=['start'])
 async def process_start_command(message: types.Message):
     """This handler will be called when user sends /start"""
+
     user_id = message.from_user.id
     first_name = message.from_user.first_name
     #проверим есть ли пользователь в базе
@@ -72,11 +73,13 @@ async def process_start_command(message: types.Message):
 @dp.message_handler(commands=['help'])
 async def process_help_command(message: types.Message):
     """This handler will be called when user sends /help"""
+
     await message.reply("Напиши мне что-нибудь, и я отпрпавлю этот текст тебе в ответ!")
 
 @dp.message_handler()
 async def echo_message(message: types.Message):
     """This handler will be called when user sends any other command"""
+
     user_id = message.from_user.id
 
     if message.text == 'Музыка':
@@ -92,6 +95,7 @@ async def echo_message(message: types.Message):
 
     elif message.text == 'Скачать':
         logging.info("user " + message.from_user.first_name + " clicked 'Download' button")
+
         #заменить блок функцией
         userdirectory = 'files/users/' + str(message.from_user.id)
         if os.path.isdir(userdirectory):
@@ -127,6 +131,7 @@ async def echo_message(message: types.Message):
                     logging.info("downloading the file from url " + url)
                     try:
                         result = youtube.downloadfile(url)
+                        #print(result)
                         logging.info("the file from " + url + " downloaded")
                     except:
                         logging.warning("Проблема с соединением при скачивании файла " + url)

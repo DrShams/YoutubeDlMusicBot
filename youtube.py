@@ -14,11 +14,14 @@ def downloadfile(url):
     }
     ydl = youtube_dl.YoutubeDL(options)
     result = 'NONE'
-    with ydl:#download
-        result = ydl.extract_info(
-            url,
-            download = True
-        )
+    try:
+        with ydl:#download
+            result = ydl.extract_info(
+                url,
+                download = True
+            )
+    except:
+        print("error catch me for " + url)
     return result
 
 #downloadfile('https://www.youtube.com/watch?v=22GUMhQ7dnA')
