@@ -1,0 +1,163 @@
+INFO:aiogram:Bot: Paradise [@Ufaparadisebot]
+INFO:aiogram.dispatcher.dispatcher:Start polling.
+INFO:root:user Ruslan Shams clicked 'Download' button
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=vX1lUMGURbY
+INFO:root:the file from https://www.youtube.com/watch?v=vX1lUMGURbY downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=t6twhXA1Gyw
+INFO:root:the file from https://www.youtube.com/watch?v=t6twhXA1Gyw downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=Pmo_YwS37cQ
+INFO:root:the file from https://www.youtube.com/watch?v=Pmo_YwS37cQ downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=lGTTqPD2XzA
+INFO:root:the file from https://www.youtube.com/watch?v=lGTTqPD2XzA downloaded
+INFO:root:the file Tension-lGTTqPD2XzA.mp3 renamed and replaced to D:\GitHub\MyRobot/files/users/344579391/Tension.mp3
+ERROR:aiogram.dispatcher.dispatcher:Cause exception while getting updates.
+Traceback (most recent call last):
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiohttp\connector.py", line 980, in _wrap_create_connection
+    return await self._loop.create_connection(*args, **kwargs)  # type: ignore[return-value]  # noqa
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 1112, in create_connection
+    transport, protocol = await self._create_connection_transport(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 1145, in _create_connection_transport
+    await waiter
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\asyncio\sslproto.py", line 575, in _on_handshake_complete
+    raise handshake_exc
+ConnectionResetError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\bot\api.py", line 139, in make_request
+    async with session.post(url, data=req, **kwargs) as response:
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiohttp\client.py", line 1141, in __aenter__
+    self._resp = await self._coro
+                 ^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiohttp\client.py", line 536, in _request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiohttp\connector.py", line 540, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiohttp\connector.py", line 901, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiohttp\connector.py", line 1209, in _create_direct_connection
+    raise last_exc
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiohttp\connector.py", line 1178, in _create_direct_connection
+    transp, proto = await self._wrap_create_connection(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiohttp\connector.py", line 988, in _wrap_create_connection
+    raise client_error(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorError: Cannot connect to host api.telegram.org:443 ssl:default [None]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 381, in start_polling
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\bot\bot.py", line 110, in get_updates
+    result = await self.request(api.Methods.GET_UPDATES, payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\bot\base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\bot\api.py", line 142, in make_request
+    raise exceptions.NetworkError(f"aiohttp client throws an error: {e.__class__.__name__}: {e}")
+aiogram.utils.exceptions.NetworkError: Aiohttp client throws an error: ClientConnectorError: Cannot connect to host api.telegram.org:443 ssl:default [None]
+INFO:root:the file files/users/344579391/Tension.mp3 sucessefully sent to Ruslan Shams
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=BgxJz0TZIb8
+INFO:root:the file from https://www.youtube.com/watch?v=BgxJz0TZIb8 downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=RM6_2d95ChA
+INFO:root:the file from https://www.youtube.com/watch?v=RM6_2d95ChA downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=3RNz2XCE_Jk
+INFO:root:the file from https://www.youtube.com/watch?v=3RNz2XCE_Jk downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=zXX0Sa0Zn-k
+INFO:root:the file from https://www.youtube.com/watch?v=zXX0Sa0Zn-k downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=Jux8iFM0Bew
+INFO:root:the file from https://www.youtube.com/watch?v=Jux8iFM0Bew downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=3vl8f1BtKbU
+INFO:root:the file from https://www.youtube.com/watch?v=3vl8f1BtKbU downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=TTVG6lbyNEg
+INFO:root:the file from https://www.youtube.com/watch?v=TTVG6lbyNEg downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=-Hclei-1bB0
+INFO:root:the file from https://www.youtube.com/watch?v=-Hclei-1bB0 downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=D-Xrts4lIgI
+INFO:root:the file from https://www.youtube.com/watch?v=D-Xrts4lIgI downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=DWpX4We62dg
+INFO:root:the file from https://www.youtube.com/watch?v=DWpX4We62dg downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=JnIKLRA31nw
+INFO:root:the file from https://www.youtube.com/watch?v=JnIKLRA31nw downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=-6L3CtNL8Xw
+INFO:root:the file from https://www.youtube.com/watch?v=-6L3CtNL8Xw downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=PuaTBhwigcU
+INFO:root:the file from https://www.youtube.com/watch?v=PuaTBhwigcU downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=pKMX9FbNSLM
+INFO:root:the file from https://www.youtube.com/watch?v=pKMX9FbNSLM downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=85qbNFHshdY
+INFO:root:the file from https://www.youtube.com/watch?v=85qbNFHshdY downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=IQX8B6l6OTc
+INFO:root:the file from https://www.youtube.com/watch?v=IQX8B6l6OTc downloaded
+INFO:root:the file Reminiscencias-IQX8B6l6OTc.mp3 renamed and replaced to D:\GitHub\MyRobot/files/users/344579391/Reminiscencias.mp3
+INFO:root:the file files/users/344579391/Reminiscencias.mp3 sucessefully sent to Ruslan Shams
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=9IJnFXpLL8w
+INFO:root:the file from https://www.youtube.com/watch?v=9IJnFXpLL8w downloaded
+INFO:root:the file Castigo-9IJnFXpLL8w.mp3 renamed and replaced to D:\GitHub\MyRobot/files/users/344579391/Castigo.mp3
+INFO:root:the file files/users/344579391/Castigo.mp3 sucessefully sent to Ruslan Shams
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=g3WktXa5tTE
+INFO:root:the file from https://www.youtube.com/watch?v=g3WktXa5tTE downloaded
+INFO:root:the file Se\xf1or Abogado-g3WktXa5tTE.mp3 renamed and replaced to D:\GitHub\MyRobot/files/users/344579391/Se\xf1or Abogado.mp3
+INFO:root:the file files/users/344579391/Se\xf1or Abogado.mp3 sucessefully sent to Ruslan Shams
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=a4fRqzK1unc
+INFO:root:the file from https://www.youtube.com/watch?v=a4fRqzK1unc downloaded
+INFO:root:the file Llora Llora Coraz\xf3n-a4fRqzK1unc.mp3 renamed and replaced to D:\GitHub\MyRobot/files/users/344579391/Llora Llora Coraz\xf3n.mp3
+INFO:root:the file files/users/344579391/Llora Llora Coraz\xf3n.mp3 sucessefully sent to Ruslan Shams
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=A9XMYzbOz7c
+INFO:root:the file from https://www.youtube.com/watch?v=A9XMYzbOz7c downloaded
+INFO:root:the file No Me Toquen Ese Vals-A9XMYzbOz7c.mp3 renamed and replaced to D:\GitHub\MyRobot/files/users/344579391/No Me Toquen Ese Vals.mp3
+INFO:root:the file files/users/344579391/No Me Toquen Ese Vals.mp3 sucessefully sent to Ruslan Shams
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=ZfDQtRav_Ss
+INFO:root:the file from https://www.youtube.com/watch?v=ZfDQtRav_Ss downloaded
+INFO:root:the file Amor Ciego-ZfDQtRav_Ss.mp3 renamed and replaced to D:\GitHub\MyRobot/files/users/344579391/Amor Ciego.mp3
+INFO:root:the file files/users/344579391/Amor Ciego.mp3 sucessefully sent to Ruslan Shams
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=3hCtOazdO8g
+INFO:root:the file from https://www.youtube.com/watch?v=3hCtOazdO8g downloaded
+INFO:root:the file Marab\xfa-3hCtOazdO8g.mp3 renamed and replaced to D:\GitHub\MyRobot/files/users/344579391/Marab\xfa.mp3
+INFO:root:the file files/users/344579391/Marab\xfa.mp3 sucessefully sent to Ruslan Shams
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=bTnRuETpgTE
+INFO:root:the file from https://www.youtube.com/watch?v=bTnRuETpgTE downloaded
+INFO:root:the file Cierra Los Ojos-bTnRuETpgTE.mp3 renamed and replaced to D:\GitHub\MyRobot/files/users/344579391/Cierra Los Ojos.mp3
+INFO:root:the file files/users/344579391/Cierra Los Ojos.mp3 sucessefully sent to Ruslan Shams
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=ItLYxok67I0
+INFO:root:the file from https://www.youtube.com/watch?v=ItLYxok67I0 downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=MWaSW5C_yRQ
+INFO:root:the file from https://www.youtube.com/watch?v=MWaSW5C_yRQ downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=S3J5APdcGhE
+INFO:root:the file from https://www.youtube.com/watch?v=S3J5APdcGhE downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=VJkoqjL0XnY
+INFO:root:the file from https://www.youtube.com/watch?v=VJkoqjL0XnY downloaded
+WARNING:root:[OSError] Синтаксическая ошибка в имени файла, имени папки или метке тома:
+ERROR:asyncio:Task exception was never retrieved
+future: <Task finished name='Task-8' coro=<Dispatcher._process_polling_updates() done, defined at C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\dispatcher.py:407> exception=FileNotFoundError(2, 'The system cannot find the file specified')>
+Traceback (most recent call last):
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\GitHub\MyRobot\tel.py", line 166, in echo_message
+    await send_audio(message, filename)
+  File "D:\GitHub\MyRobot\tel.py", line 33, in send_audio
+    filesize = os.stat(filenamepath).st_size / (1024*1024)#megabytes
+               ^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [WinError 2] The system cannot find the file specified: 'files/users/344579391/Histoire du Tango: Caf\xe9 1930-VJkoqjL0XnY.mp3'

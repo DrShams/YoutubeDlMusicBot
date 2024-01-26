@@ -21,7 +21,5 @@ def downloadfile(url):
                 download = True
             )
     except:
-        print("error catch me for " + url)
+        print("[Ошибочка] при скачивании" + url)
     return result
-
-#downloadfile('https://www.youtube.com/watch?v=22GUMhQ7dnA')
