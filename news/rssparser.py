@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import json
 import os
 from urllib.parse import urlparse
+import logging
 
 class RSSParser:
     def __init__(self, rss_url):
@@ -15,7 +16,7 @@ class RSSParser:
     def fetch_rss_content(self):
         response = requests.get(self.url)
         self.xml_content = response.content
-        print("[log]Content RSS was recieves")
+        logging.info("Content RSS was recieves")
 
     def parse_rss(self):
         root = ET.fromstring(self.xml_content)
@@ -27,7 +28,7 @@ class RSSParser:
             self.latest_item = item
             self.latest_pub_date = pub_date
             break
-        print("[log]Last news was recieved")
+        logging.info("Last news was recieved")
 
     def clean_html_text(self, html_text):
         soup = BeautifulSoup(html_text, "html.parser")
@@ -55,11 +56,11 @@ class RSSParser:
                 "Publication Date": self.latest_pub_date,
                 "ImageFileName": filename  # Change this line
             }
-            #print(self.extracted_info)
-            print("[log]Information was successefully extracted from HTML")
+            #logging.info(self.extracted_info)
+            logging.info("Information was successefully extracted from HTML")
             return filename
         else:
-            print("No matching news item found.")
+            logging.info("No matching news item found.")
 
     def retrieve_and_save_image(self, link):
         response = requests.get(link)
@@ -87,12 +88,12 @@ class RSSParser:
             with open(local_image_filename, "wb") as image_file:
                 image_file.write(image_response.content)
 
-            print(f"[log]Image saved locally as {local_image_filename}")
+            logging.info(f"Image saved locally as {local_image_filename}")
             return local_image_filename
         else:
-            print("No image found on the page.")
+            logging.error("No image found on the page.")
 
     def save_to_json(self, filename="extracted_info.json"):
         with open(filename, "w", encoding="utf-8") as json_file:
             json.dump(self.extracted_info, json_file, ensure_ascii=False, indent=2)
-            print(f"[log]Extracted information saved to {filename}")
+            logging.info(f"Extracted information saved to {filename}")

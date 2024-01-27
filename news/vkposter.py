@@ -1,6 +1,7 @@
 import requests
 import json
 import configparser
+import logging
 
 class VKPoster:
     def __init__(self, config_file='config.conf'):
@@ -14,7 +15,6 @@ class VKPoster:
 
         
     def post_to_vk_wall(self, token, owner_id, from_group, version_vk, extracted_info, filename):
-        """Этот метод постит запись непосредственно в группу в вк"""
         url = "https://api.vk.com/method/wall.post"
 
         # Extract title and description from extracted_info
@@ -23,10 +23,6 @@ class VKPoster:
 
         # Combine title and description with a newline
         message = f"{title}\n\n{description}"
-        
-        #tokenForPhotos = 'vk1.a.Tf9QOGbAMwb5yRzD2FJG0ohC4ZybRogBsAu4ZZTpYxfid8Q7QVy5PcVzqHFJ322MnbGpLvZNlJNC3xOEPSCh8mUv4eF_JHvLAml6z6ZCN7l3r1oNBab_hWjfablr2ZLO7iZa2aNDKPR5G9K1B45Uvmdj4VAn3RAkcrRNGViNfvmfDIpzhxpe0UDrTg8HdYBoEZExndMac_D82bqLS7PA2w'
-        #version = '5.199'
-        #user_albumid = '299629472'
 
         photo_id = self.upload_photo_to_vk(self.tokenForPhotos, self.user_albumid, filename, self.version)
         photo = "photo151028064_" + str(photo_id)
@@ -46,23 +42,22 @@ class VKPoster:
         )
 
         # Print the response content for debugging
-        print("Response Content:", response.content)
+        logging.debug("Response Content:", response.content)
 
         # Try to print response.json() if the content is valid JSON
         try:
-            print(response.json())
-            print(f"[log]Content successfully posted to vk wall with title {title}")
+            logging.debug(response.json())
+            logging.info(f"Content successfully posted to vk wall with title {title}")
         except Exception as e:
-            print("Error parsing JSON:", e)
+            logging.error("Error parsing JSON:", e)
 
-    def upload_photo_to_vk(self, token, alb, adres, version):
-        """Этот метод возвращает ид фото после заливки на сервер"""
-        upload_url = self.get_upload_url(token, alb, version)
-        #print("upload_url " + upload_url)
-        photo_data = {'file1': open(adres, 'rb')}
+    def upload_photo_to_vk(self, token, album_id, photo_path, version):
+        """Returns id photo after uploading image to the server"""
+        upload_url = self.get_upload_url(token, album_id, version)
+        photo_data = {'file1': open(photo_path, 'rb')}
 
         upload_response = requests.post(upload_url, files=photo_data).json()
-        #print("upload_response " + str(upload_response))
+        #logging.info("upload_response " + str(upload_response))
 
         save_url = 'https://api.vk.com/method/photos.save'
         save_params = {
@@ -75,23 +70,22 @@ class VKPoster:
         }
 
         save_response = requests.post(save_url, params=save_params).json()
-        #print("save_response " + str(save_response))
+        #logging.info("save_response " + str(save_response))
 
-        # Extract and return the 'id' from the response
         photo_id = save_response['response'][0]['id']
-        print(f"[log]Photo was uploaded to the vk server's host and has an id {photo_id}")
+        logging.info(f"Photo was uploaded to the vk server's host and has an id {photo_id}")
         return photo_id
 
-    def get_upload_url(self, token, alb, version):
-        """Этот метод получает урл куда можно заливать фотографию"""
+    def get_upload_url(self, token, album_id, version):
+        """Returns URL where we can upload images"""
         url = 'https://api.vk.com/method/photos.getUploadServer'
         params = {
             'access_token': token,
-            'album_id': alb,
+            'album_id': album_id,
             'v': version
         }
 
         response = requests.get(url, params=params).json()
         urlServer = response['response']['upload_url']
-        print(f"[log]Url for uploading photos was recieved {urlServer}")
+        logging.info(f"Url for uploading photos was recieved {urlServer}")
         return urlServer
