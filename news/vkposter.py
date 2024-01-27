@@ -1,7 +1,9 @@
-import requests
-import json
 import configparser
 import logging
+
+import requests
+
+
 
 class VKPoster:
     def __init__(self, config_file='config.conf'):
@@ -9,11 +11,10 @@ class VKPoster:
         self.config.read(config_file)
 
         # Accessing values from the configuration file
-        self.tokenForPhotos = self.config.get('VKSettings', 'tokenForPhotos')
+        self.token_for_photos = self.config.get('VKSettings', 'token_for_photos')
         self.version = self.config.get('VKSettings', 'version')
         self.user_albumid = self.config.get('VKSettings', 'user_albumid')
 
-        
     def post_to_vk_wall(self, token, owner_id, from_group, version_vk, extracted_info, filename):
         url = "https://api.vk.com/method/wall.post"
 
@@ -24,7 +25,7 @@ class VKPoster:
         # Combine title and description with a newline
         message = f"{title}\n\n{description}"
 
-        photo_id = self.upload_photo_to_vk(self.tokenForPhotos, self.user_albumid, filename, self.version)
+        photo_id = self.upload_photo_to_vk(self.token_for_photos, self.user_albumid, filename, self.version)
         photo = "photo151028064_" + str(photo_id)
 
         response = requests.post(
@@ -38,7 +39,8 @@ class VKPoster:
             },
             data={
                 'message': message
-            }
+            },
+            timeout=60
         )
 
         # Print the response content for debugging
@@ -48,16 +50,18 @@ class VKPoster:
         try:
             logging.debug(response.json())
             logging.info(f"Content successfully posted to vk wall with title {title}")
-        except Exception as e:
-            logging.error("Error parsing JSON:", e)
+        except Exception as err:
+            logging.error("Error parsing JSON:", err)
 
     def upload_photo_to_vk(self, token, album_id, photo_path, version):
         """Returns id photo after uploading image to the server"""
         upload_url = self.get_upload_url(token, album_id, version)
-        photo_data = {'file1': open(photo_path, 'rb')}
 
-        upload_response = requests.post(upload_url, files=photo_data).json()
-        #logging.info("upload_response " + str(upload_response))
+        with open(photo_path, 'rb') as file:
+            photo_data = {'file1': file}
+
+            upload_response = requests.post(upload_url, files=photo_data, timeout=60).json()
+            logging.debug("upload_response " + str(upload_response))
 
         save_url = 'https://api.vk.com/method/photos.save'
         save_params = {
@@ -69,7 +73,7 @@ class VKPoster:
             'v': version,
         }
 
-        save_response = requests.post(save_url, params=save_params).json()
+        save_response = requests.post(save_url, params=save_params, timeout=60).json()
         #logging.info("save_response " + str(save_response))
 
         photo_id = save_response['response'][0]['id']
@@ -85,7 +89,7 @@ class VKPoster:
             'v': version
         }
 
-        response = requests.get(url, params=params).json()
-        urlServer = response['response']['upload_url']
-        logging.info(f"Url for uploading photos was recieved {urlServer}")
-        return urlServer
+        response = requests.get(url, params=params, timeout=60).json()
+        url_server = response['response']['upload_url']
+        logging.info(f"Url for uploading photos was recieved {url_server}")
+        return url_server

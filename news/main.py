@@ -14,7 +14,8 @@ logging.basicConfig(
 
 class Main:
     def __init__(self, config_file='config.conf'):
-        self.rss_parser = RSSParser("https://www.votpusk.ru/newsrss/cn/newsEG.xml")#https://www.votpusk.ru/news.xml - ALL
+        #https://www.votpusk.ru/newsrss/cn/newsEG.xml
+        self.rss_parser = RSSParser("https://www.votpusk.ru/news.xml")
         self.vk_poster = VKPoster()
 
         self.config = configparser.ConfigParser()
