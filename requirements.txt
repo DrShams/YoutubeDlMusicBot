@@ -2,3 +2,4 @@ aiogram
 youtube_dl
 pytube
 beautifulsoup4
+requests
