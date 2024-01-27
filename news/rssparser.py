@@ -63,7 +63,7 @@ class RSSParser:
             }
             logging.debug(self.extracted_info)
             logging.info("Information was successefully extracted from HTML")
-            return filename
+            return self.extracted_info
         else:
             logging.error("No matching news item found.")
             return None
@@ -87,7 +87,7 @@ class RSSParser:
 
             # Extract the file extension from the image URL
             parsed_url = urlparse(image_url)
-            image_extension = os.path.splitext(os.path.basename(parsed_url.path))
+            image_extension = os.path.splitext(os.path.basename(parsed_url.path))[1]
 
             # Save the image locally using the original file extension
             local_image_filename = f"image_temp{image_extension}"

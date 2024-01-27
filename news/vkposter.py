@@ -6,7 +6,10 @@ import requests
 
 
 class VKPoster:
+    """ Class for posting data to the wall VK social media -> REST"""
+
     def __init__(self, config_file='config.conf'):
+        """Initializes a VKPoster object. :param config_file: The path to the configuration file. """
         self.config = configparser.ConfigParser()
         self.config.read(config_file)
 
@@ -14,19 +17,31 @@ class VKPoster:
         self.token_for_photos = self.config.get('VKSettings', 'token_for_photos')
         self.version = self.config.get('VKSettings', 'version')
         self.user_albumid = self.config.get('VKSettings', 'user_albumid')
+        self.myuser_id = self.config.get('VKSettings', 'myuser_id')
 
-    def post_to_vk_wall(self, token, owner_id, from_group, version_vk, extracted_info, filename):
+    def post_to_vk_wall(self, token, owner_id, version_vk, extracted_info):
+        """
+        Posts content to VK wall.
+
+        :param token: Access token for VK.
+        :param owner_id: Owner ID of the VK wall.
+        :param version_vk: VK API version.
+        :param extracted_info: Extracted information to be posted.
+        """
         url = "https://api.vk.com/method/wall.post"
 
         # Extract title and description from extracted_info
         title = extracted_info.get('Title', '')
         description = extracted_info.get('Description', '')
+        filename = extracted_info.get('ImageFileName', '')
+        #:param from_group: Specifies whether the post should be from a group.
+        from_group = 1
 
         # Combine title and description with a newline
         message = f"{title}\n\n{description}"
 
         photo_id = self.upload_photo_to_vk(self.token_for_photos, self.user_albumid, filename, self.version)
-        photo = "photo151028064_" + str(photo_id)
+        photo = "photo" + self.myuser_id + "_" + str(photo_id)
 
         response = requests.post(
             url=url,
@@ -43,8 +58,7 @@ class VKPoster:
             timeout=60
         )
 
-        # Print the response content for debugging
-        logging.debug("Response Content:", response.content)
+        logging.debug("Response Content: " + str(response.content))
 
         # Try to print response.json() if the content is valid JSON
         try:
@@ -74,14 +88,21 @@ class VKPoster:
         }
 
         save_response = requests.post(save_url, params=save_params, timeout=60).json()
-        #logging.info("save_response " + str(save_response))
+        logging.debug("Save_response " + str(save_response))
 
         photo_id = save_response['response'][0]['id']
         logging.info(f"Photo was uploaded to the vk server's host and has an id {photo_id}")
         return photo_id
 
     def get_upload_url(self, token, album_id, version):
-        """Returns URL where we can upload images"""
+        """
+        Retrieves the URL for uploading images.
+
+        :param token: Access token for VK.
+        :param album_id: ID of the VK album.
+        :param version: VK API version.
+        :return: URL for uploading photos.
+        """
         url = 'https://api.vk.com/method/photos.getUploadServer'
         params = {
             'access_token': token,
