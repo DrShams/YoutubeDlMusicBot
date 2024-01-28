@@ -14,7 +14,7 @@ class VKPoster:
         self.config.read(config_file)
 
         # Accessing values from the configuration file
-        self.token_for_photos = self.config.get('VKSettings', 'token_for_photos')
+        self.access_token = self.config.get('VKSettings', 'access_token')
         self.version = self.config.get('VKSettings', 'version')
         self.user_albumid = self.config.get('VKSettings', 'user_albumid')
         self.myuser_id = self.config.get('VKSettings', 'myuser_id')
@@ -29,34 +29,49 @@ class VKPoster:
         :param extracted_info: Extracted information to be posted.
         """
         url = "https://api.vk.com/method/wall.post"
+        #:param from_group: Specifies whether the post should be from a group.
+        from_group = 1
 
         # Extract title and description from extracted_info
         title = extracted_info.get('Title', '')
         description = extracted_info.get('Description', '')
         filename = extracted_info.get('ImageFileName', '')
-        #:param from_group: Specifies whether the post should be from a group.
-        from_group = 1
-
         # Combine title and description with a newline
         message = f"{title}\n\n{description}"
 
-        photo_id = self.upload_photo_to_vk(self.token_for_photos, self.user_albumid, filename, self.version)
-        photo = "photo" + self.myuser_id + "_" + str(photo_id)
+        if filename is not None:
 
-        response = requests.post(
-            url=url,
-            params={
-                'access_token': token,
-                'from_group': from_group,
-                'owner_id': owner_id,
-                'attachments': photo,
-                'v': version_vk
-            },
-            data={
-                'message': message
-            },
-            timeout=60
-        )
+            photo_id = self.upload_photo_to_vk(self.access_token, self.user_albumid, filename, self.version)
+            photo = "photo" + self.myuser_id + "_" + str(photo_id)
+
+            response = requests.post(
+                url=url,
+                params={
+                    'access_token': token,
+                    'from_group': from_group,
+                    'owner_id': owner_id,
+                    'attachments': photo,
+                    'v': version_vk
+                },
+                data={
+                    'message': message
+                },
+                timeout=60
+            )
+        else:#do not attach photo
+            response = requests.post(
+                url=url,
+                params={
+                    'access_token': token,
+                    'from_group': from_group,
+                    'owner_id': owner_id,
+                    'v': version_vk
+                },
+                data={
+                    'message': message
+                },
+                timeout=60
+            )
 
         logging.debug("Response Content: " + str(response.content))
 
