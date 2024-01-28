@@ -13,6 +13,18 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 
+# Create a file handler and set the logging level
+file_handler = logging.FileHandler('server.log', encoding='utf-8')
+file_handler.setLevel(logging.INFO)
+
+# Create a formatter for the file handler
+file_formatter = logging.Formatter('[%(asctime)s] [%(levelname)s] %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+file_handler.setFormatter(file_formatter)
+
+# Get the root logger and add the file handler
+logger = logging.getLogger()
+logger.addHandler(file_handler)
+
 class Main:
     def __init__(self, config_file='config.conf'):
         """Read Config File"""
