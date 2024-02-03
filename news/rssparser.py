@@ -3,6 +3,7 @@ import logging
 import json
 from urllib.parse import urlparse
 import xml.etree.ElementTree as ET
+from datetime import datetime, timezone
 
 import requests
 from bs4 import BeautifulSoup
@@ -25,17 +26,39 @@ class RSSParser:
         self.xml_content = response.content
         logging.info("Content RSS was recieves")
 
-    def parse_rss(self):
-        """Parse the RSS content."""
+    def parse_rss_news(self, news_age_limit_days):
+        """
+        [1]Parse the RSS content.
+        [2]Compare published date with current date and if that date less that value from config return that this news is valid
+        [3]Open last_news.json file, compare links guid, and if that news already was published before
+        """
         root = ET.fromstring(self.xml_content)
 
         #Retrieve only last element
         for item in root.findall(".//item"):
             pub_date = item.find("pubDate").text
+            guid = item.find("guid").text
+            # Parse the date string
+            parsed_date = datetime.strptime(pub_date, "%a, %d %b %Y %H:%M %z")
+
+            # Calculate the difference between today's date and the parsed date
+            today = datetime.now(timezone.utc)
+            difference = today - parsed_date
+            days = difference.days
+
             self.latest_item = item
             self.latest_pub_date = pub_date
-            break
-        logging.info("Last news was recieved")
+            break#we retrieve just first news
+
+        logging.info(f"Last news with {parsed_date} was recieved this news was publicated {days} days ago")
+        if days < news_age_limit_days:
+            if self.check_news_for_being_pulished_before(guid) is False:
+                return True
+            else:
+                logging.warning(f"This news with guid {guid} was published before")
+                return False
+        else:
+            return False
 
     def clean_html_text(self, html_text):
         """Clean HTML text."""
@@ -49,6 +72,7 @@ class RSSParser:
             title = self.latest_item.find("title").text
             link = self.latest_item.find("link").text
             description_html = self.latest_item.find(".//description").text
+            guid = self.latest_item.find("guid").text
 
             # Clean HTML tags and extra spaces
             description = self.clean_html_text(description_html)
@@ -57,9 +81,9 @@ class RSSParser:
             self.extracted_info = {
                 "Title": title,
                 "Description": description,
-                #"Category": category,
                 "Publication Date": self.latest_pub_date,
-                "ImageFileName": filename  # Change this line
+                "ImageFileName": filename,
+                "Guid": guid
             }
             logging.debug(self.extracted_info)
             logging.info("Information was successefully extracted from HTML")
@@ -74,11 +98,9 @@ class RSSParser:
         html_content = response.content
 
         soup = BeautifulSoup(html_content, "html.parser")
-
-        # Extract the image using the provided XPath
-        image = soup.select_one("html > body > main > div:nth-of-type(3) > div > article > div > img")
-
-        if image:
+        try:
+            # Extract the image using the provided XPath
+            image = soup.select_one("html > body > main > div:nth-of-type(3) > div > article > div > img")
             image_url = image.get("src")
             self.extracted_info["Image URL"] = image_url
 
@@ -96,12 +118,24 @@ class RSSParser:
 
             logging.info(f"Image saved locally as {local_image_filename}")
             return local_image_filename
-        else:
-            logging.error("No image found on the page.")
+        except Exception as err:
+            logging.error(f"No image found on the page. {err}")
             return None
 
-    def save_to_json(self, filename="extracted_info.json"):
+    def save_to_json(self, filename="last_news.json"):
         """Save extracted information to JSON."""
         with open(filename, "w", encoding="utf-8") as json_file:
             json.dump(self.extracted_info, json_file, ensure_ascii=False, indent=2)
             logging.info(f"Extracted information saved to {filename}")
+
+    def check_news_for_being_pulished_before(self, current_guid):
+        """If That news was already published before do not publish again"""
+        with open('last_news.json', 'r', encoding="utf8") as json_file:
+            news_data = json.load(json_file)
+
+        # Retrieve the value associated with the "Guid" key
+        guid_value = news_data.get('Guid', '')
+
+        # Save the value to the 'guid' parameter
+        guid = guid_value
+        return guid == current_guid
