@@ -12,7 +12,7 @@ from pytube import Playlist
 #[3] Local application/library specific imports
 import interface
 import database
-import youtube
+import youtube_downloader
 
 # Initialize bot and dispatcher
 config = configparser.ConfigParser()  # создаём объекта парсера
@@ -130,7 +130,7 @@ async def echo_message(message: types.Message):
                     #try:
                     logging.info("downloading the file from url " + url)
                     try:
-                        result = youtube.downloadfile(url)
+                        result = youtube_downloader.downloadfile(url)
                         #print(result)
                         logging.info("the file from " + url + " downloaded")
                     except:

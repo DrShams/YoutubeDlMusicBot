@@ -1,4 +1,5 @@
 import youtube_dl
+import sys
 
 def downloadfile(url):
     """Function download files from Youtube and returns dictionary?"""
@@ -21,5 +22,6 @@ def downloadfile(url):
                 download = True
             )
     except:
-        print("[Ошибочка] при скачивании" + url)
+        e = sys.exc_info()[1]
+        print("[Ошибочка] при скачивании" + url + " " + e.args[0])
     return result

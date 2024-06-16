@@ -1,15 +1,308 @@
 INFO:aiogram:Bot: Paradise [@Ufaparadisebot]
 INFO:aiogram.dispatcher.dispatcher:Start polling.
+ERROR:asyncio:Task exception was never retrieved
+future: <Task finished name='Task-23' coro=<Dispatcher._process_polling_updates() done, defined at C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\dispatcher.py:407> exception=NameError("name 'music_menu' is not defined")>
+Traceback (most recent call last):
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\GitHub\MyRobot\main.py", line 94, in echo_message
+    await message.reply("Выберите действие",reply_markup=music_menu)
+                                                         ^^^^^^^^^^
+NameError: name 'music_menu' is not defined
+ERROR:asyncio:Task exception was never retrieved
+future: <Task finished name='Task-32' coro=<Dispatcher._process_polling_updates() done, defined at C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\dispatcher.py:407> exception=NameError("name 'main_menu' is not defined")>
+Traceback (most recent call last):
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\GitHub\MyRobot\main.py", line 71, in process_start_command
+    await message.reply("Привет!\nНапиши мне что-нибудь!",reply_markup=main_menu)
+                                                                       ^^^^^^^^^
+NameError: name 'main_menu' is not defined
+ERROR:asyncio:Task exception was never retrieved
+future: <Task finished name='Task-37' coro=<Dispatcher._process_polling_updates() done, defined at C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\dispatcher.py:407> exception=NameError("name 'main_menu' is not defined")>
+Traceback (most recent call last):
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\GitHub\MyRobot\main.py", line 71, in process_start_command
+    await message.reply("Привет!\nНапиши мне что-нибудь!",reply_markup=main_menu)
+                                                                       ^^^^^^^^^
+NameError: name 'main_menu' is not defined
 INFO:root:user Ruslan Shams clicked 'Download' button
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=kZXy91L79UE
+INFO:root:the file from https://www.youtube.com/watch?v=kZXy91L79UE downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=4i9L6eEG93E
+INFO:root:the file from https://www.youtube.com/watch?v=4i9L6eEG93E downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=VrY-bjflCoQ
+INFO:root:the file from https://www.youtube.com/watch?v=VrY-bjflCoQ downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=iGvj7db5pDY
+INFO:root:the file from https://www.youtube.com/watch?v=iGvj7db5pDY downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=YV0mcJLeSLA
+INFO:root:the file from https://www.youtube.com/watch?v=YV0mcJLeSLA downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=632PB_lGL7g
+INFO:root:the file from https://www.youtube.com/watch?v=632PB_lGL7g downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=Y-DvoGHOEas
+INFO:root:the file from https://www.youtube.com/watch?v=Y-DvoGHOEas downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=FEqm3_RXTro
+INFO:root:the file from https://www.youtube.com/watch?v=FEqm3_RXTro downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=oqewux_9a1E
+INFO:root:the file from https://www.youtube.com/watch?v=oqewux_9a1E downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=0H6A5mlZz74
+INFO:root:the file from https://www.youtube.com/watch?v=0H6A5mlZz74 downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=pmTh4XRRBTE
+INFO:root:the file from https://www.youtube.com/watch?v=pmTh4XRRBTE downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=KlFV9U33t8o
+INFO:root:the file from https://www.youtube.com/watch?v=KlFV9U33t8o downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=iG-q8aDjfhY
+INFO:root:the file from https://www.youtube.com/watch?v=iG-q8aDjfhY downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=Aiszg_6B6cw
+INFO:root:the file from https://www.youtube.com/watch?v=Aiszg_6B6cw downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=4fPPEeCuxgI
+INFO:root:the file from https://www.youtube.com/watch?v=4fPPEeCuxgI downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=27SwZZ8jiBc
+INFO:root:the file from https://www.youtube.com/watch?v=27SwZZ8jiBc downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=n9DmdAwUbxc
+INFO:root:the file from https://www.youtube.com/watch?v=n9DmdAwUbxc downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=psiytW9Or2s
+INFO:root:the file from https://www.youtube.com/watch?v=psiytW9Or2s downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=neIscK1hNxs
+INFO:root:the file from https://www.youtube.com/watch?v=neIscK1hNxs downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=T0BlXy3Roj4
+INFO:root:the file from https://www.youtube.com/watch?v=T0BlXy3Roj4 downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=6-UawKke4ZA
+INFO:root:the file from https://www.youtube.com/watch?v=6-UawKke4ZA downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=SWWP7MSdVII
+INFO:root:the file from https://www.youtube.com/watch?v=SWWP7MSdVII downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=LjDboJB87LE
+INFO:root:the file from https://www.youtube.com/watch?v=LjDboJB87LE downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=DQAsxc4Oexo
+INFO:root:the file from https://www.youtube.com/watch?v=DQAsxc4Oexo downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=XaK06tBPwaM
+INFO:root:the file from https://www.youtube.com/watch?v=XaK06tBPwaM downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=OfEY54zJ0NU
+INFO:root:the file from https://www.youtube.com/watch?v=OfEY54zJ0NU downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=uPznChzO9zc
+INFO:root:the file from https://www.youtube.com/watch?v=uPznChzO9zc downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=GShSTLAtq-I
+INFO:root:the file from https://www.youtube.com/watch?v=GShSTLAtq-I downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=YGIHM9NIzFA
+INFO:root:the file from https://www.youtube.com/watch?v=YGIHM9NIzFA downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=kuaKqEZcez0
+INFO:root:the file from https://www.youtube.com/watch?v=kuaKqEZcez0 downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=VgHk9btBLmw
+INFO:root:the file from https://www.youtube.com/watch?v=VgHk9btBLmw downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=BOsEu8ljnGU
+INFO:root:the file from https://www.youtube.com/watch?v=BOsEu8ljnGU downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=ytchczvmI14
+INFO:root:the file from https://www.youtube.com/watch?v=ytchczvmI14 downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=zMT8k2eaHCU
+INFO:root:the file from https://www.youtube.com/watch?v=zMT8k2eaHCU downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=mtLIjHY-zHw
+INFO:root:the file from https://www.youtube.com/watch?v=mtLIjHY-zHw downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=uJH_pd3Qp6M
+INFO:root:the file from https://www.youtube.com/watch?v=uJH_pd3Qp6M downloaded
 INFO:root:downloading the file from url https://www.youtube.com/watch?v=vX1lUMGURbY
 INFO:root:the file from https://www.youtube.com/watch?v=vX1lUMGURbY downloaded
 INFO:root:downloading the file from url https://www.youtube.com/watch?v=t6twhXA1Gyw
 INFO:root:the file from https://www.youtube.com/watch?v=t6twhXA1Gyw downloaded
 INFO:root:downloading the file from url https://www.youtube.com/watch?v=Pmo_YwS37cQ
 INFO:root:the file from https://www.youtube.com/watch?v=Pmo_YwS37cQ downloaded
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=lGTTqPD2XzA
-INFO:root:the file from https://www.youtube.com/watch?v=lGTTqPD2XzA downloaded
-INFO:root:the file Tension-lGTTqPD2XzA.mp3 renamed and replaced to D:\GitHub\MyRobot/files/users/344579391/Tension.mp3
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=BgxJz0TZIb8
+INFO:root:the file from https://www.youtube.com/watch?v=BgxJz0TZIb8 downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=RM6_2d95ChA
+INFO:root:the file from https://www.youtube.com/watch?v=RM6_2d95ChA downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=3RNz2XCE_Jk
+INFO:root:the file from https://www.youtube.com/watch?v=3RNz2XCE_Jk downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=zXX0Sa0Zn-k
+INFO:root:the file from https://www.youtube.com/watch?v=zXX0Sa0Zn-k downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=Jux8iFM0Bew
+INFO:root:the file from https://www.youtube.com/watch?v=Jux8iFM0Bew downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=3vl8f1BtKbU
+INFO:root:the file from https://www.youtube.com/watch?v=3vl8f1BtKbU downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=TTVG6lbyNEg
+INFO:root:the file from https://www.youtube.com/watch?v=TTVG6lbyNEg downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=-Hclei-1bB0
+INFO:root:the file from https://www.youtube.com/watch?v=-Hclei-1bB0 downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=D-Xrts4lIgI
+INFO:root:the file from https://www.youtube.com/watch?v=D-Xrts4lIgI downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=DWpX4We62dg
+INFO:root:the file from https://www.youtube.com/watch?v=DWpX4We62dg downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=JnIKLRA31nw
+INFO:root:the file from https://www.youtube.com/watch?v=JnIKLRA31nw downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=-6L3CtNL8Xw
+INFO:root:the file from https://www.youtube.com/watch?v=-6L3CtNL8Xw downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=PuaTBhwigcU
+INFO:root:the file from https://www.youtube.com/watch?v=PuaTBhwigcU downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=pKMX9FbNSLM
+INFO:root:the file from https://www.youtube.com/watch?v=pKMX9FbNSLM downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=85qbNFHshdY
+INFO:root:the file from https://www.youtube.com/watch?v=85qbNFHshdY downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=ItLYxok67I0
+INFO:root:the file from https://www.youtube.com/watch?v=ItLYxok67I0 downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=MWaSW5C_yRQ
+INFO:root:the file from https://www.youtube.com/watch?v=MWaSW5C_yRQ downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=S3J5APdcGhE
+INFO:root:the file from https://www.youtube.com/watch?v=S3J5APdcGhE downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=ycfM6XGBE30
+INFO:root:the file from https://www.youtube.com/watch?v=ycfM6XGBE30 downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=r1rjIwuWuf8
+INFO:root:the file from https://www.youtube.com/watch?v=r1rjIwuWuf8 downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=f2VROY01EAg
+INFO:root:the file from https://www.youtube.com/watch?v=f2VROY01EAg downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=5A8MKWKLM-o
+INFO:root:the file from https://www.youtube.com/watch?v=5A8MKWKLM-o downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=bWevlvIrhJ0
+INFO:root:the file from https://www.youtube.com/watch?v=bWevlvIrhJ0 downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=kcxlEZgAO3c
+INFO:root:the file from https://www.youtube.com/watch?v=kcxlEZgAO3c downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=9z-perF-2u4
+INFO:root:the file from https://www.youtube.com/watch?v=9z-perF-2u4 downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=3TOzkCIaXjI
+INFO:root:the file from https://www.youtube.com/watch?v=3TOzkCIaXjI downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=ei0uy2N-Ru4
+INFO:root:the file from https://www.youtube.com/watch?v=ei0uy2N-Ru4 downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=VP7P-MR9i0s
+INFO:root:the file from https://www.youtube.com/watch?v=VP7P-MR9i0s downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=oHiU-u2ddJ4
+INFO:root:the file from https://www.youtube.com/watch?v=oHiU-u2ddJ4 downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=J6ah1WPkBNI
+INFO:root:the file from https://www.youtube.com/watch?v=J6ah1WPkBNI downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=UjDptS3fcw8
+INFO:root:the file from https://www.youtube.com/watch?v=UjDptS3fcw8 downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=9x3QGpJgFRo
+INFO:root:the file from https://www.youtube.com/watch?v=9x3QGpJgFRo downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=uba55vsxTGQ
+INFO:root:the file from https://www.youtube.com/watch?v=uba55vsxTGQ downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=LnKHOj6exYM
+INFO:root:the file from https://www.youtube.com/watch?v=LnKHOj6exYM downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=wP9qAi6vfNI
+INFO:root:the file from https://www.youtube.com/watch?v=wP9qAi6vfNI downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=gnu0qVfCPyA
+INFO:root:the file from https://www.youtube.com/watch?v=gnu0qVfCPyA downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=_zzu2K5hDFk
+INFO:root:the file from https://www.youtube.com/watch?v=_zzu2K5hDFk downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=FKaoDM1N-Uc
+INFO:root:the file from https://www.youtube.com/watch?v=FKaoDM1N-Uc downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=C81zAPm0wv4
+INFO:root:the file from https://www.youtube.com/watch?v=C81zAPm0wv4 downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=7qMYif4PeHI
+INFO:root:the file from https://www.youtube.com/watch?v=7qMYif4PeHI downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=4tDpM5uOsN0
+INFO:root:the file from https://www.youtube.com/watch?v=4tDpM5uOsN0 downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=_J5R-FYIp6A
+INFO:root:the file from https://www.youtube.com/watch?v=_J5R-FYIp6A downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=Qco9wzFpouk
+INFO:root:the file from https://www.youtube.com/watch?v=Qco9wzFpouk downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=2hk88m-3lKg
+INFO:root:the file from https://www.youtube.com/watch?v=2hk88m-3lKg downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=8bumj9pmGiw
+INFO:root:the file from https://www.youtube.com/watch?v=8bumj9pmGiw downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=8VSB7Raq_E4
+INFO:root:the file from https://www.youtube.com/watch?v=8VSB7Raq_E4 downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=jjsVzMtXzxg
+INFO:root:the file from https://www.youtube.com/watch?v=jjsVzMtXzxg downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=aFdM0f8Pi5o
+INFO:root:the file from https://www.youtube.com/watch?v=aFdM0f8Pi5o downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=5xGl20dFxQM
+INFO:root:the file from https://www.youtube.com/watch?v=5xGl20dFxQM downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=0pux7a1y8xo
+INFO:root:the file from https://www.youtube.com/watch?v=0pux7a1y8xo downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=fty-3nekqjI
+INFO:root:the file from https://www.youtube.com/watch?v=fty-3nekqjI downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=Ywq6FMLbWH4
+INFO:root:the file from https://www.youtube.com/watch?v=Ywq6FMLbWH4 downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=d5AfvOk57bE
+INFO:root:the file from https://www.youtube.com/watch?v=d5AfvOk57bE downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=EzKdLcd0qWU
+INFO:root:the file from https://www.youtube.com/watch?v=EzKdLcd0qWU downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=9vMh9f41pqE
+INFO:root:the file from https://www.youtube.com/watch?v=9vMh9f41pqE downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=H6Sp0u7exPA
+INFO:root:the file from https://www.youtube.com/watch?v=H6Sp0u7exPA downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=urbmwI8APdo
+INFO:root:the file from https://www.youtube.com/watch?v=urbmwI8APdo downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=SpIgOm5vFkE
+INFO:root:the file from https://www.youtube.com/watch?v=SpIgOm5vFkE downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=J5spiMVI9U8
+INFO:root:the file from https://www.youtube.com/watch?v=J5spiMVI9U8 downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=xyvizEWq41s
+INFO:root:the file from https://www.youtube.com/watch?v=xyvizEWq41s downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=ezKwv8C0P24
+INFO:root:the file from https://www.youtube.com/watch?v=ezKwv8C0P24 downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=Z9gqT07aYoo
+INFO:root:the file from https://www.youtube.com/watch?v=Z9gqT07aYoo downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=raag6epTRzI
+INFO:root:the file from https://www.youtube.com/watch?v=raag6epTRzI downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=7pOTYrKVfmk
+INFO:root:the file from https://www.youtube.com/watch?v=7pOTYrKVfmk downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=Gq7ynQPssUk
+INFO:root:the file from https://www.youtube.com/watch?v=Gq7ynQPssUk downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=EDsQCSg_eW0
+INFO:root:the file from https://www.youtube.com/watch?v=EDsQCSg_eW0 downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=RJuc2faHn0A
+INFO:root:the file from https://www.youtube.com/watch?v=RJuc2faHn0A downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=X2QjMpTdkQE
+INFO:root:the file from https://www.youtube.com/watch?v=X2QjMpTdkQE downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=Sr83-y1LVVU
+INFO:root:the file from https://www.youtube.com/watch?v=Sr83-y1LVVU downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=ICBzBhiXO-I
+INFO:root:the file from https://www.youtube.com/watch?v=ICBzBhiXO-I downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=iWCf8wkDGM8
+INFO:root:the file from https://www.youtube.com/watch?v=iWCf8wkDGM8 downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=HVtUuvHQzFw
+INFO:root:the file from https://www.youtube.com/watch?v=HVtUuvHQzFw downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=1qxTAJdKgJg
+INFO:root:the file from https://www.youtube.com/watch?v=1qxTAJdKgJg downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=gBItg6EeJNM
+INFO:root:the file from https://www.youtube.com/watch?v=gBItg6EeJNM downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=k0GYBO8p3-Y
+INFO:root:the file from https://www.youtube.com/watch?v=k0GYBO8p3-Y downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=QNoC_mVojhc
+INFO:root:the file from https://www.youtube.com/watch?v=QNoC_mVojhc downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=exRaVIumBO4
+INFO:root:the file from https://www.youtube.com/watch?v=exRaVIumBO4 downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=6-zSsw0LQMw
+INFO:root:the file from https://www.youtube.com/watch?v=6-zSsw0LQMw downloaded
+INFO:root:downloading the file from url https://www.youtube.com/watch?v=vJgGs9WpGt0
+INFO:root:the file from https://www.youtube.com/watch?v=vJgGs9WpGt0 downloaded
 ERROR:aiogram.dispatcher.dispatcher:Cause exception while getting updates.
 Traceback (most recent call last):
   File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiohttp\connector.py", line 980, in _wrap_create_connection
@@ -65,99 +358,5 @@ Traceback (most recent call last):
   File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\bot\api.py", line 142, in make_request
     raise exceptions.NetworkError(f"aiohttp client throws an error: {e.__class__.__name__}: {e}")
 aiogram.utils.exceptions.NetworkError: Aiohttp client throws an error: ClientConnectorError: Cannot connect to host api.telegram.org:443 ssl:default [None]
-INFO:root:the file files/users/344579391/Tension.mp3 sucessefully sent to Ruslan Shams
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=BgxJz0TZIb8
-INFO:root:the file from https://www.youtube.com/watch?v=BgxJz0TZIb8 downloaded
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=RM6_2d95ChA
-INFO:root:the file from https://www.youtube.com/watch?v=RM6_2d95ChA downloaded
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=3RNz2XCE_Jk
-INFO:root:the file from https://www.youtube.com/watch?v=3RNz2XCE_Jk downloaded
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=zXX0Sa0Zn-k
-INFO:root:the file from https://www.youtube.com/watch?v=zXX0Sa0Zn-k downloaded
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=Jux8iFM0Bew
-INFO:root:the file from https://www.youtube.com/watch?v=Jux8iFM0Bew downloaded
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=3vl8f1BtKbU
-INFO:root:the file from https://www.youtube.com/watch?v=3vl8f1BtKbU downloaded
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=TTVG6lbyNEg
-INFO:root:the file from https://www.youtube.com/watch?v=TTVG6lbyNEg downloaded
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=-Hclei-1bB0
-INFO:root:the file from https://www.youtube.com/watch?v=-Hclei-1bB0 downloaded
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=D-Xrts4lIgI
-INFO:root:the file from https://www.youtube.com/watch?v=D-Xrts4lIgI downloaded
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=DWpX4We62dg
-INFO:root:the file from https://www.youtube.com/watch?v=DWpX4We62dg downloaded
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=JnIKLRA31nw
-INFO:root:the file from https://www.youtube.com/watch?v=JnIKLRA31nw downloaded
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=-6L3CtNL8Xw
-INFO:root:the file from https://www.youtube.com/watch?v=-6L3CtNL8Xw downloaded
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=PuaTBhwigcU
-INFO:root:the file from https://www.youtube.com/watch?v=PuaTBhwigcU downloaded
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=pKMX9FbNSLM
-INFO:root:the file from https://www.youtube.com/watch?v=pKMX9FbNSLM downloaded
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=85qbNFHshdY
-INFO:root:the file from https://www.youtube.com/watch?v=85qbNFHshdY downloaded
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=IQX8B6l6OTc
-INFO:root:the file from https://www.youtube.com/watch?v=IQX8B6l6OTc downloaded
-INFO:root:the file Reminiscencias-IQX8B6l6OTc.mp3 renamed and replaced to D:\GitHub\MyRobot/files/users/344579391/Reminiscencias.mp3
-INFO:root:the file files/users/344579391/Reminiscencias.mp3 sucessefully sent to Ruslan Shams
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=9IJnFXpLL8w
-INFO:root:the file from https://www.youtube.com/watch?v=9IJnFXpLL8w downloaded
-INFO:root:the file Castigo-9IJnFXpLL8w.mp3 renamed and replaced to D:\GitHub\MyRobot/files/users/344579391/Castigo.mp3
-INFO:root:the file files/users/344579391/Castigo.mp3 sucessefully sent to Ruslan Shams
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=g3WktXa5tTE
-INFO:root:the file from https://www.youtube.com/watch?v=g3WktXa5tTE downloaded
-INFO:root:the file Se\xf1or Abogado-g3WktXa5tTE.mp3 renamed and replaced to D:\GitHub\MyRobot/files/users/344579391/Se\xf1or Abogado.mp3
-INFO:root:the file files/users/344579391/Se\xf1or Abogado.mp3 sucessefully sent to Ruslan Shams
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=a4fRqzK1unc
-INFO:root:the file from https://www.youtube.com/watch?v=a4fRqzK1unc downloaded
-INFO:root:the file Llora Llora Coraz\xf3n-a4fRqzK1unc.mp3 renamed and replaced to D:\GitHub\MyRobot/files/users/344579391/Llora Llora Coraz\xf3n.mp3
-INFO:root:the file files/users/344579391/Llora Llora Coraz\xf3n.mp3 sucessefully sent to Ruslan Shams
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=A9XMYzbOz7c
-INFO:root:the file from https://www.youtube.com/watch?v=A9XMYzbOz7c downloaded
-INFO:root:the file No Me Toquen Ese Vals-A9XMYzbOz7c.mp3 renamed and replaced to D:\GitHub\MyRobot/files/users/344579391/No Me Toquen Ese Vals.mp3
-INFO:root:the file files/users/344579391/No Me Toquen Ese Vals.mp3 sucessefully sent to Ruslan Shams
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=ZfDQtRav_Ss
-INFO:root:the file from https://www.youtube.com/watch?v=ZfDQtRav_Ss downloaded
-INFO:root:the file Amor Ciego-ZfDQtRav_Ss.mp3 renamed and replaced to D:\GitHub\MyRobot/files/users/344579391/Amor Ciego.mp3
-INFO:root:the file files/users/344579391/Amor Ciego.mp3 sucessefully sent to Ruslan Shams
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=3hCtOazdO8g
-INFO:root:the file from https://www.youtube.com/watch?v=3hCtOazdO8g downloaded
-INFO:root:the file Marab\xfa-3hCtOazdO8g.mp3 renamed and replaced to D:\GitHub\MyRobot/files/users/344579391/Marab\xfa.mp3
-INFO:root:the file files/users/344579391/Marab\xfa.mp3 sucessefully sent to Ruslan Shams
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=bTnRuETpgTE
-INFO:root:the file from https://www.youtube.com/watch?v=bTnRuETpgTE downloaded
-INFO:root:the file Cierra Los Ojos-bTnRuETpgTE.mp3 renamed and replaced to D:\GitHub\MyRobot/files/users/344579391/Cierra Los Ojos.mp3
-INFO:root:the file files/users/344579391/Cierra Los Ojos.mp3 sucessefully sent to Ruslan Shams
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=ItLYxok67I0
-INFO:root:the file from https://www.youtube.com/watch?v=ItLYxok67I0 downloaded
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=MWaSW5C_yRQ
-INFO:root:the file from https://www.youtube.com/watch?v=MWaSW5C_yRQ downloaded
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=S3J5APdcGhE
-INFO:root:the file from https://www.youtube.com/watch?v=S3J5APdcGhE downloaded
-INFO:root:downloading the file from url https://www.youtube.com/watch?v=VJkoqjL0XnY
-INFO:root:the file from https://www.youtube.com/watch?v=VJkoqjL0XnY downloaded
-WARNING:root:[OSError] Синтаксическая ошибка в имени файла, имени папки или метке тома:
-ERROR:asyncio:Task exception was never retrieved
-future: <Task finished name='Task-8' coro=<Dispatcher._process_polling_updates() done, defined at C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\dispatcher.py:407> exception=FileNotFoundError(2, 'The system cannot find the file specified')>
-Traceback (most recent call last):
-  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 415, in _process_polling_updates
-    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
-                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 235, in process_updates
-    return await asyncio.gather(*tasks)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\handler.py", line 117, in notify
-    response = await handler_obj.handler(*args, **partial_data)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 256, in process_update
-    return await self.message_handlers.notify(update.message)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\1\AppData\Local\Programs\Python\Python311\Lib\site-packages\aiogram\dispatcher\handler.py", line 117, in notify
-    response = await handler_obj.handler(*args, **partial_data)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "D:\GitHub\MyRobot\tel.py", line 166, in echo_message
-    await send_audio(message, filename)
-  File "D:\GitHub\MyRobot\tel.py", line 33, in send_audio
-    filesize = os.stat(filenamepath).st_size / (1024*1024)#megabytes
-               ^^^^^^^^^^^^^^^^^^^^^
-FileNotFoundError: [WinError 2] The system cannot find the file specified: 'files/users/344579391/Histoire du Tango: Caf\xe9 1930-VJkoqjL0XnY.mp3'
+INFO:aiogram.dispatcher.dispatcher:Stop polling...
+WARNING:aiogram:Goodbye!
