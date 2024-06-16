@@ -18,8 +18,9 @@ async def send_to_user_audio(message: types.Message, filename: str, video_url: s
     try:
         filesize = os.stat(filenamepath).st_size / (1024 * 1024)  # megabytes
     except FileNotFoundError:
-        logging.warning(f"File {filenamepath} not found")
-        await bot.send_message(user_id, f"Файл {filename} не найден")
+        current_directory = os.getcwd()  # Get the current working directory
+        logging.warning(f"File {filenamepath} not found in {current_directory}")
+        await bot.send_message(user_id, f"Файл {filename} не найден в директории: {current_directory}")
         return
     
     if filesize >= 50:
