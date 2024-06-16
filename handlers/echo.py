@@ -48,7 +48,7 @@ async def handle_download_command(message, user_id):
     for filename in os.listdir(userdirectory):
         if filename.endswith('.mp3'):
             await bot.send_message(user_id, f"Ожидается отправка {filename} из хранилища...")
-            await send_to_user_audio(message, filename)
+            await send_to_user_audio(message, filename, "")
 
     database.cur.execute('SELECT playlist_url FROM Users WHERE id = ? AND playlist_url is not NULL',(user_id,))
     row = database.cur.fetchone()
