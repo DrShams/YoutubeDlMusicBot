@@ -14,6 +14,9 @@ from bot import dp, bot
 from handlers.audio import send_to_user_audio
 from utils import database, youtube_downloader
 
+from utils.buttons import createbuttons
+main_menu = createbuttons()
+
 @dp.message_handler()
 async def echo_message(message: types.Message):
     """This handler will be called when user sends any other command"""
@@ -37,7 +40,7 @@ async def handle_music_command(message, user_id):
         await bot.send_message(user_id, "Вставьте ссылку в чат на плейлист youtube")
     else:
         await bot.send_message(user_id, "Плейлист найден url = " + str(row[0]))
-        await message.reply("Выберите действие",reply_markup=music_menu)
+        await message.reply("Выберите действие",reply_markup=main_menu)
 
 async def handle_download_command(message, user_id):
     logging.info("user %s clicked 'Download' button", message.from_user.first_name)
@@ -68,8 +71,9 @@ async def handle_playlist_link(message, user_id, link):
         await bot.send_message(user_id, link)
 
 async def download_playlist(message, url, user_id):
-    await bot.send_message(user_id, f"Начинается скачивание плейлиста по url = {url}")
     link = Playlist(url)
+    await bot.send_message(user_id, f"Начинается скачивание плейлиста по url = {url}\
+                           \nКол-во треков в плейлисте всего {len(link.video_urls)}")
     count = 0
 
     userdirectory = os.path.join('files', 'users', str(user_id))
@@ -79,22 +83,18 @@ async def download_playlist(message, url, user_id):
         database.cur.execute('SELECT status FROM Playlist WHERE url = ? AND user_id = ?', (video_url, user_id))
         row = database.cur.fetchone()
         if row and row[0] == 1:
-            logging.info(f"File from url {video_url} already downloaded, skipping.")
+            logging.debug(f"File from url {video_url} already downloaded, skipping.")
             continue
 
         try:
-            result = youtube_downloader.downloadfile(video_url, userdirectory)
-            logging.info("The file from %s downloaded", video_url)
+            result = await youtube_downloader.downloadfile(message, video_url, userdirectory)
+            logging.info(f"The file from {video_url} downloaded ")#\n{result}
         except Exception as e:
             logging.warning("Connection issue while downloading file %s: %s", video_url, str(e))
             continue
 
         if result != 'NONE':
             count += 1
-
-            sanitized_filename = result.get('sanitized_filename')
-            if not sanitized_filename:
-                continue 
 
             try:
                 STATUS_CODE_JUST_DOWNLOADED = 0
@@ -103,10 +103,9 @@ async def download_playlist(message, url, user_id):
                     (user_id, video_url, STATUS_CODE_JUST_DOWNLOADED)
                 )
                 database.conn.commit()
-            
-                await send_to_user_audio(message, sanitized_filename, video_url)
             except Exception as e:
-                logging.error(f"Failed to send audio: {e}")
+                logging.error(f"Failed to execute querry: {e}")
+                continue
 
     if count == 0:
         await bot.send_message(user_id, "Новых саундтреков нет")

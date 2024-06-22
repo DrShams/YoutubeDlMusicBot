@@ -1,4 +1,2 @@
 ![block_diagram](.description/cat.png)
-don't forget to create 'users' directory in files  
-and install additional library for transformacion from .web to .mp3  
-sudo apt-get install ffmpeg
+each 20 second an app send get request to the telegram api for checking updates
