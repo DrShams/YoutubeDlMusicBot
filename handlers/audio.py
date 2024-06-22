@@ -29,15 +29,7 @@ async def send_to_user_audio(message: types.Message, filename: str, video_url: s
         logging.warning(f"File {filename} was skipped (more than 50 megabytes)")
         await bot.send_message(user_id, f"Файл {filename} был пропущен, т.к. весит больше 50 мегабайт")
         os.remove(filenamepath)
-        try:#PUT INTO SEPARATE METHOD
-            STATUS_CODE_SENT = 1
-            database.cur.execute(
-                'UPDATE Playlist SET status = ? WHERE url = ? AND user_id = ?',
-                (STATUS_CODE_SENT, video_url, user_id)
-            )
-            database.conn.commit()
-        except Exception as e:
-            logging.error(f"Failed to update status in database: {e}")
+        await update_status_in_db(user_id, video_url, 1)
     else:
         try:
             with open(filenamepath, 'rb') as audio:
@@ -46,17 +38,19 @@ async def send_to_user_audio(message: types.Message, filename: str, video_url: s
                 logging.info(f"File {filenamepath} successfully sent to {message.from_user.first_name}")
             os.remove(filenamepath)
             logging.debug(f"File {filenamepath} removed")
-
-            try:#DOUBLE CODE DELETE IT !!!
-                STATUS_CODE_SENT = 1
-                database.cur.execute(
-                    'UPDATE Playlist SET status = ? WHERE url = ? AND user_id = ?',
-                    (STATUS_CODE_SENT, video_url, user_id)
-                )
-                database.conn.commit()
-            except Exception as e:
-                logging.error(f"Failed to update status in database: {e}")
+            await update_status_in_db(user_id, video_url, 1)
         except ConnectionResetError:
             logging.warning(f"[ConnectionResetError] Connection with the user {message.from_user.first_name} has been interrupted")
         except Exception as err:
             logging.warning(f"[Exception] {traceback.format_exc()}")
+
+async def update_status_in_db(user_id, video_url, status)
+    try:#PUT INTO SEPARATE METHOD
+        database.cur.execute(
+            'UPDATE Playlist SET status = ? WHERE url = ? AND user_id = ?',
+            (status, video_url, user_id)
+        )
+        database.conn.commit()
+        logging.info(f"Status updated to {status} for video_url {video_url}")
+    except Exception as e:
+        logging.error(f"Failed to update status in database: {e}")
