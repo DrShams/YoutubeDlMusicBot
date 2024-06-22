@@ -8,6 +8,8 @@ configure_logging()
 #[2]Related third party imports.
 from aiogram import executor, types
 from pytube import Playlist
+import asyncio
+message_send_lock = asyncio.Lock()
 
 #[3] Local application/library specific imports
 from bot import dp, bot
@@ -23,14 +25,15 @@ async def echo_message(message: types.Message):
     user_id = message.from_user.id
     text = message.text
 
-    if text == 'Музыка':
-        await handle_music_command(message, user_id)
-    elif text == 'Скачать':
-        await handle_download_command(message, user_id)
-    elif text == 'Редактировать плейлист':
-        await bot.send_message(user_id, "Вставьте ссылку в чат на плейлист youtube")
-    else:
-        await handle_playlist_link(message, user_id, text)
+    async with message_send_lock:
+        if text == 'Музыка':
+            await handle_music_command(message, user_id)
+        elif text == 'Скачать':
+            await handle_download_command(message, user_id)
+        elif text == 'Редактировать плейлист':
+            await bot.send_message(user_id, "Вставьте ссылку в чат на плейлист youtube")
+        else:
+            await handle_playlist_link(message, user_id, text)
 
 
 async def handle_music_command(message, user_id):

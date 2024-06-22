@@ -6,6 +6,8 @@ import logging
 from utils.logging_config import configure_logging
 configure_logging()
 
+import asyncio
+file_operation_lock = asyncio.Lock()
 import yt_dlp as youtube_dl
 import os
 
@@ -56,25 +58,26 @@ async def downloadfile(message, video_url, download_path):
 
 async def rename_if_match_and_send(message, video_url, download_path, sanitized_filename):
     # Check existence of any file that matches the original unsanitized name pattern
-    matching_file = None
-    for f in os.listdir(download_path):
-        realfilename = await sanitize_filename(f[:-4])# remove .mp3 and await the result
-        if realfilename == sanitized_filename:
-            matching_file = f
-            break
-    
-    if matching_file:
-        original_filepath = os.path.join(download_path, matching_file)
-        sanitized_filepath = os.path.join(download_path, sanitized_filename)
+    async with file_operation_lock:
+        matching_file = None
+        for f in os.listdir(download_path):
+            realfilename = await sanitize_filename(f[:-4])# remove .mp3 and await the result
+            if realfilename == sanitized_filename:
+                matching_file = f
+                break
         
-        try:
-            os.rename(original_filepath, sanitized_filepath)
-            logging.info(f"File renamed to {sanitized_filepath}")
-            await send_to_user_audio(message, sanitized_filename, video_url)
-            return True
-        except OSError as e:
-            logging.error(f"Failed to rename file: {e}")
+        if matching_file:
+            original_filepath = os.path.join(download_path, matching_file)
+            sanitized_filepath = os.path.join(download_path, sanitized_filename)
+            
+            try:
+                os.rename(original_filepath, sanitized_filepath)
+                logging.info(f"File renamed to {sanitized_filepath}")
+                await send_to_user_audio(message, sanitized_filename, video_url)
+                return True
+            except OSError as e:
+                logging.error(f"Failed to rename file: {e}")
+                return False
+        else:
+            logging.error(f"Original file not found for sanitized filename: {sanitized_filename}")
             return False
-    else:
-        logging.error(f"Original file not found for sanitized filename: {sanitized_filename}")
-        return False
