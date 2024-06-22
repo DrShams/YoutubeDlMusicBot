@@ -18,11 +18,11 @@ How It Works
         Each track is downloaded to a separate folder created for each user.
         The database records each track with a status code of 0 (indicating the track is downloaded but not yet sent).
 
-    Handling Downloads:
+    - Handling Downloads:
         If the Telegram API is unavailable, the tracks remain in the local storage until the user clicks the "Download" button again.
         Upon the next click, all previously downloaded tracks are sent from local storage to the user via Telegram.
 
-    Sending Tracks:
+    - Sending Tracks:
         When the Telegram API is available, tracks are automatically sent to the user through the Telegram bot.
         The database status for each track changes to 1, preventing duplicate sends on subsequent downloads.
 
