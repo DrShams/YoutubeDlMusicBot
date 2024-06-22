@@ -2,6 +2,8 @@ from aiogram import types
 from bot import bot, dp
 from utils import database
 import logging
+from utils.logging_config import configure_logging
+configure_logging()
 
 @dp.message_handler(commands=['start'])
 async def process_start_command(message: types.Message):

@@ -1,6 +1,8 @@
 import os
 import re
 import logging
+from utils.logging_config import configure_logging
+configure_logging()
 import traceback
 from aiogram import types
 from bot import bot

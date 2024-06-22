@@ -1,5 +1,7 @@
 import os
 import logging
+from utils.logging_config import configure_logging
+configure_logging()
 from aiogram import executor
 from bot import dp
 from utils import database, buttons

@@ -2,6 +2,8 @@
 import os
 import re
 import logging
+from utils.logging_config import configure_logging
+configure_logging()
 
 #[2]Related third party imports.
 from aiogram import executor, types
