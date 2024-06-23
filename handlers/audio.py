@@ -44,6 +44,7 @@ async def send_to_user_audio(message: types.Message, filename: str, video_url: s
         except Exception as err:
             logging.warning(f"[Exception] {traceback.format_exc()}")
 
+#move to utils/database.py in the future
 async def update_status_in_db(user_id, video_url, status):
     try:#PUT INTO SEPARATE METHOD
         database.cur.execute(
