@@ -40,4 +40,13 @@ The primary goal of this project is to allow users to update their playlists onl
     - Database:
         SQLite is used as the database backend. Although SQLite is convenient, it may face inconsistencies, especially with asynchronous operations. For better reliability and performance, migrating to a more robust database like MySQL or PostgreSQL is recommended.
 
+### Settings File:
+    location path: files/settings.ini
+    
+    [Telegram]
+    TOKEN = <YOUR TELEGRAM API TOKEN>
+
+instruction how to obtain telegram api token:
+https://core.telegram.org/bots/tutorial    
+
 ***This project provides a seamless way for music lovers to keep their playlists updated and accessible offline, combining the convenience of YouTube playlists with the accessibility of Telegram bots.***

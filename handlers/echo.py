@@ -98,7 +98,7 @@ async def download_playlist(message, url, user_id):
 
         if result != 'NONE':
             count += 1
-
+            #move to utils/database.py in the future
             try:
                 STATUS_CODE_JUST_DOWNLOADED = 0
                 database.cur.execute(
