@@ -16,6 +16,7 @@ if __name__ == '__main__':
     database.makedb()
     buttons.createbuttons()
     try:
-        executor.start_polling(dp)
+        print("started")
+        executor.start_polling(dp, allowed_updates=["message", "inline_query", "chat_member"])
     except KeyboardInterrupt as exception:
         logging.warning("You stopped the execution of the programm")

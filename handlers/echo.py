@@ -55,6 +55,7 @@ async def handle_download_command(message, user_id):
         
     for filename in os.listdir(userdirectory):
         if filename.endswith('.mp3'):
+            logging.info("Ожидается отправка %s из хранилища",  filename)
             await bot.send_message(user_id, f"Ожидается отправка {filename} из хранилища...")
             await send_to_user_audio(message, filename, "")
 
@@ -75,6 +76,7 @@ async def handle_playlist_link(message, user_id, link):
 
 async def download_playlist(message, url, user_id):
     link = Playlist(url)
+    logging.info("Начинается скачивание плейлиста по url",  url)
     await bot.send_message(user_id, f"Начинается скачивание плейлиста по url = {url}\
                            \nКол-во треков в плейлисте всего {len(link.video_urls)}")
     count = 0
