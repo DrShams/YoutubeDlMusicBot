@@ -75,44 +75,48 @@ async def handle_playlist_link(message, user_id, link):
         await bot.send_message(user_id, link)
 
 async def download_playlist(message, url, user_id):
-    link = Playlist(url)
-    logging.info("Начинается скачивание плейлиста по url",  url)
-    await bot.send_message(user_id, f"Начинается скачивание плейлиста по url = {url}\
-                           \nКол-во треков в плейлисте всего {len(link.video_urls)}")
-    count = 0
+    try:
+        link = Playlist(url)
+        logging.info("1 Started downloading: %s",  str(url))
+        #await bot.send_message(user_id, f"Начинается скачивание плейлиста\nКол-во треков в плейлисте всего {len(link.video_urls)}")
+        await bot.send_message(user_id, "Начинается скачивание плейлиста")
+        count = 0
+        logging.info("2 Started downloading: %s",  url)
+        userdirectory = os.path.join('files', 'users', str(user_id))
 
-    userdirectory = os.path.join('files', 'users', str(user_id))
-
-    for video_url in link.video_urls:
-        # Check if the URL has already been downloaded
-        database.cur.execute('SELECT status FROM Playlist WHERE url = ? AND user_id = ?', (video_url, user_id))
-        row = database.cur.fetchone()
-        if row and row[0] == 1:
-            logging.debug(f"File from url {video_url} already downloaded, skipping.")
-            continue
-
-        try:
-            result = await youtube_downloader.downloadfile(message, video_url, userdirectory)
-            logging.info(f"The file from {video_url} downloaded ")#\n{result}
-        except Exception as e:
-            logging.warning("Connection issue while downloading file %s: %s", video_url, str(e))
-            continue
-
-        if result != 'NONE':
-            count += 1
-            #move to utils/database.py in the future
-            try:
-                STATUS_CODE_JUST_DOWNLOADED = 0
-                database.cur.execute(
-                    'INSERT INTO Playlist (user_id, url, status) VALUES (?, ?, ?)',
-                    (user_id, video_url, STATUS_CODE_JUST_DOWNLOADED)
-                )
-                database.conn.commit()
-            except Exception as e:
-                logging.error(f"Failed to execute querry: {e}")
+        for video_url in link.video_urls:
+            # Check if the URL has already been downloaded
+            database.cur.execute('SELECT status FROM Playlist WHERE url = ? AND user_id = ?', (video_url, user_id))
+            row = database.cur.fetchone()
+            if row and row[0] == 1:
+                logging.debug(f"File from url {video_url} already downloaded, skipping.")
                 continue
 
-    if count == 0:
-        await bot.send_message(user_id, "Новых саундтреков нет")
-    else:
-        await bot.send_message(user_id, f"Добавлено {count} саундтрек(ов)")
+            try:
+                result = await youtube_downloader.downloadfile(message, video_url, userdirectory)
+                logging.info(f"The file from {video_url} downloaded ")#\n{result}
+            except Exception as e:
+                logging.warning("Connection issue while downloading file %s: %s", video_url, str(e))
+                continue
+
+            if result != 'NONE':
+                count += 1
+                #move to utils/database.py in the future
+                try:
+                    STATUS_CODE_JUST_DOWNLOADED = 0
+                    database.cur.execute(
+                        'INSERT INTO Playlist (user_id, url, status) VALUES (?, ?, ?)',
+                        (user_id, video_url, STATUS_CODE_JUST_DOWNLOADED)
+                    )
+                    database.conn.commit()
+                except Exception as e:
+                    logging.error(f"Failed to execute querry: {e}")
+                    continue
+
+        if count == 0:
+            await bot.send_message(user_id, "Новых саундтреков нет")
+        else:
+            await bot.send_message(user_id, f"Добавлено {count} саундтрек(ов)")
+    except Exception as e:
+        logging.error(f"Failed to process the playlist: {e}")
+        await bot.send_message(user_id, "Произошла ошибка при обработке плейлиста. Попробуйте еще раз позже.")

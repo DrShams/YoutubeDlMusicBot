@@ -1,9 +1,11 @@
 import os
+import logging
 from aiogram import executor
+
 from bot import dp
 from utils import database, buttons
-import logging
 from utils.logging_config import configure_logging
+
 configure_logging()
 
 import handlers.commands
@@ -17,6 +19,6 @@ if __name__ == '__main__':
     buttons.createbuttons()
     try:
         print("started")
-        executor.start_polling(dp, allowed_updates=["message", "inline_query", "chat_member"])
+        executor.start_polling(dp)
     except KeyboardInterrupt as exception:
         logging.warning("You stopped the execution of the programm")
