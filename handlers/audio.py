@@ -5,6 +5,7 @@ from utils.logging_config import configure_logging
 configure_logging()
 import traceback
 from aiogram import types
+from aiogram.types import FSInputFile
 from bot import bot
 from utils import database
 
@@ -33,8 +34,9 @@ async def send_to_user_audio(message: types.Message, filename: str, video_url: s
     else:
         try:
             with open(filenamepath, 'rb') as audio:
+                input_file = FSInputFile(filenamepath)
                 logging.debug(f"File {filenamepath} successfully opened")
-                await bot.send_audio(user_id, audio, performer=track_title, title=track_title)
+                await bot.send_audio(user_id, input_file, performer=track_title, title=track_title)
                 logging.info(f"File {filenamepath} successfully sent to {message.from_user.first_name}")
             os.remove(filenamepath)
             logging.debug(f"File {filenamepath} removed")

@@ -1,13 +1,12 @@
 #[1]Standard library imports
 import os
-import re
 import logging
 from utils.logging_config import configure_logging
-configure_logging()
 
 #[2]Related third party imports.
-from aiogram import executor, types
-from pytube import Playlist
+from aiogram import types, Router
+from aiogram.filters import Command
+import yt_dlp
 import asyncio
 message_send_lock = asyncio.Lock()
 
@@ -15,11 +14,13 @@ message_send_lock = asyncio.Lock()
 from bot import dp, bot
 from handlers.audio import send_to_user_audio
 from utils import database, youtube_downloader
-
 from utils.buttons import createbuttons
-main_menu = createbuttons()
 
-@dp.message_handler()
+configure_logging()
+main_menu = createbuttons()
+router = Router()
+
+@router.message()
 async def echo_message(message: types.Message):
     """This handler will be called when user sends any other command"""
     user_id = message.from_user.id
@@ -76,15 +77,28 @@ async def handle_playlist_link(message, user_id, link):
 
 async def download_playlist(message, url, user_id):
     try:
-        link = Playlist(url)
-        logging.debug("1 Started downloading: %s",  str(url))
         #await bot.send_message(user_id, f"Начинается скачивание плейлиста\nКол-во треков в плейлисте всего {len(link.video_urls)}")
         await bot.send_message(user_id, "Начинается скачивание плейлиста")
-        count = 0
-        logging.debug("2 Started downloading: %s",  url)
         userdirectory = os.path.join('files', 'users', str(user_id))
+        count = 0
+        video_urls = []
+        ydl_opts = {
+            'quiet': True,
+            'extract_flat': True,  # Не скачивать, а только получить список
+            'skip_download': True,
+            'proxy': 'socks5://y2kDfM:SdW0Cz@85.195.81.165:11682',
+        }
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=False)
+            if 'entries' in info:
+                video_urls = [entry['url'] for entry in info['entries']]
+            else:
+                video_urls = [info['url']]  # если вдруг одна ссылка
 
-        for video_url in link.video_urls:
+        logging.debug(f"Playlist has {len(video_urls)} videos")
+        logging.debug(f"Playlist video URLs: {video_urls}")
+
+        for video_url in video_urls:
             # Check if the URL has already been downloaded
             database.cur.execute('SELECT status FROM Playlist WHERE url = ? AND user_id = ?', (video_url, user_id))
             row = database.cur.fetchone()

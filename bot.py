@@ -6,4 +6,4 @@ config = configparser.ConfigParser()  # создаём объекта парсе
 config.read("files/settings.ini")  # читаем конфиг
 TOKEN = config["Telegram"]["TOKEN"] # обращаемся как к обычному словарю!
 bot = Bot(token=TOKEN)
-dp = Dispatcher(bot)
+dp = Dispatcher()

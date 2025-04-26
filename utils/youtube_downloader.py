@@ -8,9 +8,8 @@ configure_logging()
 
 import asyncio
 file_operation_lock = asyncio.Lock()
-import yt_dlp as youtube_dl
+import yt_dlp
 import os
-
 import re
 
 async def sanitize_filename(filename):
@@ -33,9 +32,10 @@ async def downloadfile(message, video_url, download_path):
             'preferredquality': '192'
         }],
         'proxy': 'socks5://y2kDfM:SdW0Cz@85.195.81.165:11682',
-        'cookiefile': 'cookies.txt'
+        'cookiesfrombrowser': ('firefox',),
+        'socket_timeout': 60,  # Увеличиваем таймаут для соединения
     }
-    ydl = youtube_dl.YoutubeDL(options)
+    ydl = yt_dlp.YoutubeDL(options)
     result = 'NONE'
     try:
         with ydl:#download

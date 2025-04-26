@@ -1,24 +1,31 @@
 import os
 import logging
-from aiogram import executor
+import asyncio
 
-from bot import dp
+from bot import dp, bot
 from utils import database, buttons
 from utils.logging_config import configure_logging
 
+from handlers.commands import router as commands_router
+from handlers.echo import router as echo_router
+
+dp.include_router(commands_router)
+dp.include_router(echo_router)
+
 configure_logging()
 
-import handlers.commands
-import handlers.echo
-
-if __name__ == '__main__':
+async def main():
     path = os.path.abspath("files/")
     os.environ["PATH"] += os.pathsep + path
 
     database.makedb()
     buttons.createbuttons()
+
+    print("started")
     try:
-        print("started")
-        executor.start_polling(dp)
+        await dp.start_polling(bot)
     except KeyboardInterrupt as exception:
         logging.warning("You stopped the execution of the programm")
+
+if __name__ == '__main__':
+    asyncio.run(main())

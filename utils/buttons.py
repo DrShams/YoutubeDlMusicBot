@@ -3,10 +3,11 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 def createbuttons():
     """Create buttons for telegram bot"""
 
-    btn_music_download = KeyboardButton('Скачать')
-    btn_music_change = KeyboardButton('Редактировать плейлист')
+    btn_music_download = KeyboardButton(text='Скачать')
+    btn_music_change = KeyboardButton(text='Редактировать плейлист')
 
-    main_menu = ReplyKeyboardMarkup(resize_keyboard = True) # чтобы кнопки не были во весь экран
-    main_menu.add(btn_music_download, btn_music_change)
-
+    main_menu = ReplyKeyboardMarkup(
+        keyboard=[[btn_music_download, btn_music_change]],
+        resize_keyboard=True
+    )
     return main_menu

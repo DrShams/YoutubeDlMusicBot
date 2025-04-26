@@ -1,13 +1,16 @@
-from aiogram import types
-from bot import bot, dp
+from aiogram import types, Router
+from aiogram.filters import Command
+from bot import bot
 from utils import database
 from utils.buttons import createbuttons
 import logging
 from utils.logging_config import configure_logging
+
 configure_logging()
 main_menu = createbuttons()
+router = Router()
 
-@dp.message_handler(commands=['start'])
+@router.message(Command("start"))
 async def process_start_command(message: types.Message):
     """This handler will be called when user sends /start"""
 
@@ -35,7 +38,7 @@ async def process_start_command(message: types.Message):
         await send_message_with_residual_tracks_to_download(message, track_count)
     
 
-@dp.message_handler(commands=['help'])
+@router.message(Command("help"))
 async def process_help_command(message: types.Message):
     """This handler will be called when user sends /help"""
 
