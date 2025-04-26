@@ -39,7 +39,7 @@ async def echo_message(message: types.Message):
         elif text == 'Редактировать плейлист':
             await bot.send_message(user_id, "Вставьте ссылку в чат на плейлист youtube")
         else:
-            await handle_playlist_link(message, user_id, text)
+            await handle_playlist_link(user_id, text)
 
 
 async def handle_music_command(message, user_id):
@@ -70,9 +70,9 @@ async def handle_download_command(message, user_id):
     if row is None:
         await bot.send_message(user_id, "Вставьте ссылку в чат на плейлист youtube")
     else:
-        await download_playlist(message, row[0], user_id)#row[0] = playlist_url
+        await download_playlist(message, row[0], user_id)
 
-async def handle_playlist_link(message, user_id, link):
+async def handle_playlist_link(user_id, link):
     if '.com/playlist?list' in link:
         database.cur.execute('UPDATE Users SET playlist_url = ? WHERE id = ?',(link,user_id))
         database.conn.commit()
@@ -95,13 +95,13 @@ async def download_playlist(message, url, user_id):
 
         proxy_url = f'socks5://{proxy_user}:{proxy_pass}@{proxy_host}:{proxy_port}'
         
-        ydl_opts = {
+        options = {
             'quiet': True,
             'extract_flat': True,  # Не скачивать, а только получить список
             'skip_download': True,
             'proxy': proxy_url,
         }
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        with yt_dlp.YoutubeDL(options) as ydl:
             info = ydl.extract_info(url, download=False)
             if 'entries' in info:
                 video_urls = [entry['url'] for entry in info['entries']]

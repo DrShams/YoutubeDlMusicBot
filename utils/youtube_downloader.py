@@ -10,6 +10,8 @@ import configparser
 from handlers.audio import send_to_user_audio
 from utils.logging_config import configure_logging
 
+
+
 file_operation_lock = asyncio.Lock()
 configure_logging()
 warnings.filterwarnings("ignore", message="Failed to import \"curl_cffi\" request handler")
@@ -44,7 +46,8 @@ async def downloadfile(message, video_url, download_path):
             'preferredquality': '192'
         }],
         'proxy': proxy_url,
-        'cookiesfrombrowser': ('firefox',),
+        #'cookiesfrombrowser': ('firefox',),
+        'cookiefile': 'files/cookies.txt',  # <- add this if you want saving
         'socket_timeout': 60,  # Увеличиваем таймаут для соединения
     }
     ydl = yt_dlp.YoutubeDL(options)
