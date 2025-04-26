@@ -1,18 +1,22 @@
 import os
-import re
 import logging
-from utils.logging_config import configure_logging
-configure_logging()
+
+import re
 import traceback
 from aiogram import types
 from aiogram.types import FSInputFile
+
 from bot import bot
 from utils import database
+from utils.logging_config import configure_logging
+
+
+configure_logging()
 
 async def send_to_user_audio(message: types.Message, filename: str, video_url: str):
     """Send audiofile to a user"""
     user_id = message.from_user.id
-    pattern = '[^\.]*'
+    pattern = '[^\\.]*'
     m = re.search(pattern,filename)
     track_title = m.group(0)
 

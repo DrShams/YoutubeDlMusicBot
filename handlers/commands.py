@@ -1,10 +1,14 @@
+import logging
+
 from aiogram import types, Router
 from aiogram.filters import Command
+
 from bot import bot
 from utils import database
 from utils.buttons import createbuttons
-import logging
 from utils.logging_config import configure_logging
+
+
 
 configure_logging()
 main_menu = createbuttons()

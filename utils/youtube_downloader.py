@@ -1,19 +1,24 @@
-import warnings
-
-from handlers.audio import send_to_user_audio
-warnings.filterwarnings("ignore", message="Failed to import \"curl_cffi\" request handler")
-import logging
-from utils.logging_config import configure_logging
-configure_logging()
-
-import asyncio
-file_operation_lock = asyncio.Lock()
-import yt_dlp
 import os
+import warnings
+import logging
 import re
 
+import asyncio
+import yt_dlp
+import configparser
+
+from handlers.audio import send_to_user_audio
+from utils.logging_config import configure_logging
+
+file_operation_lock = asyncio.Lock()
+configure_logging()
+warnings.filterwarnings("ignore", message="Failed to import \"curl_cffi\" request handler")
+
+config = configparser.ConfigParser()
+config.read('files/settings.ini')
+
 async def sanitize_filename(filename):
-    # Remove non-alphanumeric characters and preserve .mp3 extension
+    """Remove non-alphanumeric characters and preserve .mp3 extension"""
     sanitized = re.sub(r'[^a-zA-Z0-9]', '', filename)
     name = sanitized + '.mp3'
     logging.debug(f"Function sanitize_filename: {name}")
@@ -22,6 +27,13 @@ async def sanitize_filename(filename):
 async def downloadfile(message, video_url, download_path):
     """Function download files from Youtube and returns dictionary?"""
     #'max_filesize': 5000000#telegram will not allow to sent more than 50 megabytes files
+    proxy_user = config.get('Proxy', 'PROXY_USER')
+    proxy_pass = config.get('Proxy', 'PROXY_PASS')
+    proxy_host = config.get('Proxy', 'PROXY_HOST')
+    proxy_port = config.get('Proxy', 'PROXY_PORT')
+
+    proxy_url = f'socks5://{proxy_user}:{proxy_pass}@{proxy_host}:{proxy_port}'
+    
     options = {
         'format': 'bestaudio/best',
         'outtmpl': os.path.join(download_path, '%(title)s.%(ext)s'),  # Save to the specified directory
@@ -31,7 +43,7 @@ async def downloadfile(message, video_url, download_path):
             'preferredcodec': 'mp3',
             'preferredquality': '192'
         }],
-        'proxy': 'socks5://y2kDfM:SdW0Cz@85.195.81.165:11682',
+        'proxy': proxy_url,
         'cookiesfrombrowser': ('firefox',),
         'socket_timeout': 60,  # Увеличиваем таймаут для соединения
     }

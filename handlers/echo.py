@@ -9,6 +9,7 @@ from aiogram.filters import Command
 import yt_dlp
 import asyncio
 message_send_lock = asyncio.Lock()
+import configparser
 
 #[3] Local application/library specific imports
 from bot import dp, bot
@@ -16,9 +17,13 @@ from handlers.audio import send_to_user_audio
 from utils import database, youtube_downloader
 from utils.buttons import createbuttons
 
+
+
 configure_logging()
 main_menu = createbuttons()
 router = Router()
+config = configparser.ConfigParser()
+config.read('files/settings.ini')
 
 @router.message()
 async def echo_message(message: types.Message):
@@ -82,11 +87,19 @@ async def download_playlist(message, url, user_id):
         userdirectory = os.path.join('files', 'users', str(user_id))
         count = 0
         video_urls = []
+
+        proxy_user = config.get('Proxy', 'PROXY_USER')
+        proxy_pass = config.get('Proxy', 'PROXY_PASS')
+        proxy_host = config.get('Proxy', 'PROXY_HOST')
+        proxy_port = config.get('Proxy', 'PROXY_PORT')
+
+        proxy_url = f'socks5://{proxy_user}:{proxy_pass}@{proxy_host}:{proxy_port}'
+        
         ydl_opts = {
             'quiet': True,
             'extract_flat': True,  # Не скачивать, а только получить список
             'skip_download': True,
-            'proxy': 'socks5://y2kDfM:SdW0Cz@85.195.81.165:11682',
+            'proxy': proxy_url,
         }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
