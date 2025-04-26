@@ -77,11 +77,11 @@ async def handle_playlist_link(message, user_id, link):
 async def download_playlist(message, url, user_id):
     try:
         link = Playlist(url)
-        logging.info("1 Started downloading: %s",  str(url))
+        logging.debug("1 Started downloading: %s",  str(url))
         #await bot.send_message(user_id, f"Начинается скачивание плейлиста\nКол-во треков в плейлисте всего {len(link.video_urls)}")
         await bot.send_message(user_id, "Начинается скачивание плейлиста")
         count = 0
-        logging.info("2 Started downloading: %s",  url)
+        logging.debug("2 Started downloading: %s",  url)
         userdirectory = os.path.join('files', 'users', str(user_id))
 
         for video_url in link.video_urls:

@@ -31,7 +31,9 @@ async def downloadfile(message, video_url, download_path):
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
             'preferredquality': '192'
-        }]
+        }],
+        'proxy': 'socks5://y2kDfM:SdW0Cz@85.195.81.165:11682',
+        'cookiefile': 'cookies.txt'
     }
     ydl = youtube_dl.YoutubeDL(options)
     result = 'NONE'
