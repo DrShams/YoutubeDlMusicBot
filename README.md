@@ -46,7 +46,33 @@ The primary goal of this project is to allow users to update their playlists onl
     [Telegram]
     TOKEN = <YOUR TELEGRAM API TOKEN>
 
+    [Proxy]
+    PROXY_USER = youruser
+    PROXY_PASS = pass
+    PROXY_HOST = url
+    PROXY_PORT = port
+
 instruction how to obtain telegram api token:
 https://core.telegram.org/bots/tutorial    
+
+### Prerequisite
+1) py -m pip install -r requirements
+2) download https://ffmpeg.org/download.html
+
+### Problems
+1) You have to setup proxy on the side where the app will be deployed
+2) Cookies - it is impossible now to enter the website without actual cookies, so at first set up entering to Youtube from browser, then cookies should be saved
+and then you can retrieve cookies from the browser
+...
+
+TightVNCConnection 
+1) Viewer https://www.tightvnc.com/download.php
+2) Server
+sudo apt install tightvncserver
+vncserver
+lsof -i :5901
+COMMAND      PID    USER   FD   TYPE  DEVICE SIZE/OFF NODE NAME
+Xtightvnc 697580 drshams    3u  IPv4 7358331      0t0  TCP *:5901 (LISTEN)
+...
 
 ***This project provides a seamless way for music lovers to keep their playlists updated and accessible offline, combining the convenience of YouTube playlists with the accessibility of Telegram bots.***

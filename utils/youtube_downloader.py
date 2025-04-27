@@ -7,7 +7,7 @@ import asyncio
 import yt_dlp
 import configparser
 
-from handlers.audio import send_to_user_audio
+from handlers.audio import send_to_user_audio, update_status_in_db
 from utils.logging_config import configure_logging
 
 
@@ -26,7 +26,7 @@ async def sanitize_filename(filename):
     logging.debug(f"Function sanitize_filename: {name}")
     return name
 
-async def downloadfile(message, video_url, download_path):
+async def downloadfile(message, video_url, download_path, user_id):
     """Function download files from Youtube and returns dictionary?"""
     #'max_filesize': 5000000#telegram will not allow to sent more than 50 megabytes files
     proxy_user = config.get('Proxy', 'PROXY_USER')
@@ -68,7 +68,16 @@ async def downloadfile(message, video_url, download_path):
                 logging.info(f"Sanitized filename: {sanitized_filename}")
 
                 await rename_if_match_and_send(message, video_url, download_path, sanitized_filename)
-                
+    except yt_dlp.utils.DownloadError as e:
+        error_message = str(e)
+        if 'This video is private' in error_message:
+            logging.error(f"This video is private")
+            await update_status_in_db(user_id,video_url,status=2)
+        elif 'This video is not available' in error_message:
+            logging.error(f"This video is not available")
+            await update_status_in_db(user_id,video_url,status=2)
+        else:
+            print(f"[Ошибочка] ошибка при скачивании {video_url}: {error_message}")           
     except Exception as e:
         print(f"[Ошибочка] при скачивании {video_url} {str(e)}")
     return result

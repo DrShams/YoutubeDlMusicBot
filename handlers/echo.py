@@ -113,14 +113,14 @@ async def download_playlist(message, url, user_id):
 
         for video_url in video_urls:
             # Check if the URL has already been downloaded
-            database.cur.execute('SELECT status FROM Playlist WHERE url = ? AND user_id = ?', (video_url, user_id))
+            database.cur.execute('SELECT status FROM Playlist WHERE url = ? AND user_id = ? AND status = 0', (video_url, user_id))
             row = database.cur.fetchone()
-            if row and row[0] == 1:
+            if row and (row[0] == 1 or row[0] == 2):
                 logging.debug(f"File from url {video_url} already downloaded, skipping.")
                 continue
 
             try:
-                result = await youtube_downloader.downloadfile(message, video_url, userdirectory)
+                result = await youtube_downloader.downloadfile(message, video_url, userdirectory, user_id)
                 logging.info(f"The file from {video_url} downloaded ")#\n{result}
             except Exception as e:
                 logging.warning("Connection issue while downloading file %s: %s", video_url, str(e))

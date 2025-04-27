@@ -34,7 +34,7 @@ async def send_to_user_audio(message: types.Message, filename: str, video_url: s
         logging.warning(f"File {filename} was skipped (more than 50 megabytes)")
         await bot.send_message(user_id, f"Файл {filename} был пропущен, т.к. весит больше 50 мегабайт")
         os.remove(filenamepath)
-        await update_status_in_db(user_id, video_url, 1)
+        await update_status_in_db(user_id, video_url, 2)
     else:
         try:
             with open(filenamepath, 'rb') as audio:
